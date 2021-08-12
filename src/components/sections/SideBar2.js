@@ -6,15 +6,18 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import {
-  MDBRange,
-  MDBCheckbox,
-  MDBCol,
-  MDBRow,
-  MDBBtn,
-  MDBInput,
-  MDBInputGroup,
-} from "mdb-react-ui-kit";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import { MDBInput, MDBInputGroup } from "mdb-react-ui-kit";
 
 import { selectCart } from "./../../redux/reducers/CartSlice";
 import { selectSellers } from "./../../redux/reducers/VendorSlice";
@@ -101,7 +104,6 @@ function SideBar() {
   return (
     <>
       <section
-        className="col-lg-3"
         style={{ padding: "20px", borderColor: "black", borderWidth: "2px" }}
       >
         {/* Card */}
@@ -134,7 +136,6 @@ function SideBar() {
               />
             </MDBInputGroup>
 
-            <h5>Vehicle</h5>
             <FormControl className={classes.formControl}>
               <InputLabel id="make-controlled-open-select-label">
                 Select make

@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import Fire from "./../../lib/firebaseConfig";
 import {
   addItem,
   deleteItem,
@@ -61,6 +62,22 @@ class Operations {
       let filter = vendors.find(({ uid }) => uid === currentID);
 
       return filter.displayName;
+    }
+  };
+
+  signIn = async (email, password) => {
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email.trim(), password);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  signUp = (displayName, email, phoneNumber, password) => {
+    try {
+      Fire.shared.createUser(displayName, email, phoneNumber, password);
+    } catch (error) {
+      alert(error);
     }
   };
 }

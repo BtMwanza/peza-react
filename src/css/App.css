@@ -34,12 +34,14 @@
 }
 
 .title {
-  height: 3.2rem;
+  flex: 1 33.3%;
+  font-size: 16px;
+  height: 2.8rem;
   flex-grow: 2;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -80,10 +82,12 @@
   bottom: 5px;
 }
 
-.img {
-  height: 100px;
+.img-fit {
+  height: 100%;
   width: 100%;
-  object-fit: cover;
+  margin: auto;
+  display: block;
+  object-fit: contain;
   flex: auto;
 }
 
@@ -102,7 +106,42 @@
 /* Style your items */
 .my-masonry-grid_column > div {
   /* change div to reference your elements you put in <Masonry> */
-  background: #f5f5f5;
-  margin-bottom: 30px;
+  background: #e9f7ef;
+  margin-bottom: 20px;
   padding: 10px;
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  padding: 2%;
+  flex-grow: 2;
+  flex-basis: 16%;
+  margin: auto;
+  flex: 1 33.3%;
+  max-width: 170px;
+  background-color: #e9f7ef;
+}
+
+.card-background {
+  border-radius: 5px;
+  height: 320px;
+  min-width: 160px;
+}
+
+.MuiDrawer-paper {
+  top: 0;
+  flex: 1 0 auto;
+  height: 100%;
+  display: flex;
+  outline: 0;
+  z-index: 1200;
+  position: fixed;
+  overflow-y: auto;
+  flex-direction: column;
+  background-color: #00675b !important;
+  -webkit-overflow-scrolling: touch;
 }

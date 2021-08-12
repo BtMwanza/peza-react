@@ -12,6 +12,7 @@ import {
   fetchPopularProducts,
   fetchRecentProducts,
   fetchTransactions,
+  fetchProducts,
 } from "./../redux/reducers/ProductSlice";
 import { fetchVendors } from "./../redux/reducers/VendorSlice";
 import { Header, Footer, SideBar, Products, Products2 } from "./../components";
@@ -29,6 +30,7 @@ function Home() {
 
   React.useEffect(() => {
     dispatch(fetchRecentProducts());
+    dispatch(fetchProducts());
     dispatch(fetchTransactions());
     dispatch(fetchPopularProducts());
     dispatch(fetchVendors());

@@ -12,6 +12,11 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Radio from "@material-ui/core/Radio";
 import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
 
 import {
   MDBContainer,
@@ -92,21 +97,19 @@ function Products() {
 
   return (
     <div className={classes.root2}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper2}>xs=12</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper2}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={9}>
-          <Paper className={classes.paper2}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
-          <Paper className={classes.paper}>xs=9</Paper>
+      <Grid container>
+        <Grid item xs={12} className="products">
+          {products.map((item) => (
+            <Card className="product-card">
+              <div className={classes.img_box}>
+                <img className={classes.img} src={item.image} />
+              </div>
+              <hr />
+              <CardContent>
+                <Typography className="title">{item.productName}</Typography>
+              </CardContent>
+            </Card>
+          ))}
         </Grid>
       </Grid>
     </div>

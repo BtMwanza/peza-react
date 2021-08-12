@@ -7,7 +7,7 @@ function Footer() {
       <MDBContainer className="p-4">
         <MDBRow>
           <MDBCol lg="6" md="12" className="mb-4 mb-md-0">
-            <h5 className="text-uppercase">Footer Content</h5>
+            <h5 className="text-uppercase">PEZA</h5>
 
             <p>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste
@@ -23,7 +23,7 @@ function Footer() {
             <ul className="list-unstyled mb-0">
               <li>
                 <a href="#!" className="text-dark">
-                  Link 1
+                  <i className="fi fi-facebook"></i>
                 </a>
               </li>
               <li>

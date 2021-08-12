@@ -1,25 +1,32 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FiLock, FiUnlock, FiShoppingBag } from "react-icons/fi";
+import { FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import firebase from "firebase/app";
+import Masonry from "react-masonry-css";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import IconButton from "@material-ui/core/IconButton";
 import {
-  MDBContainer,
   MDBRow,
   MDBCol,
   MDBCard,
   MDBCardBody,
   MDBCardTitle,
-  MDBCardText,
   MDBCardImage,
   MDBBtn,
-  MDBBtnGroup,
   MDBIcon,
   MDBCollapse,
   MDBNavbarToggler,
   MDBNavbar,
-  MDBRange,
-  MDBCheckbox,
 } from "mdb-react-ui-kit";
 
 import { selectCart } from "./../../redux/reducers/CartSlice";
@@ -29,41 +36,42 @@ import { selectProducts } from "./../../redux/reducers/ProductSlice";
 import Operations from "../functions/operations";
 import useStyles from "./../../css/style";
 import "./../../css/App.css";
-import Sidebar from "./SideBar";
+import SideBar from "./SideBar";
+import Categories from "./Categories";
 import {
   filterList,
   searchList,
-  fetchData,
   setVendorID,
   setCurrentProduct,
+  setSimilarProducts,
 } from "./../../redux";
-import SideBar from "./SideBar";
+import Pagination from "./Pagination";
 
 function Products() {
   const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { products, selectedCategory, categories, mainList, searchText } =
-    useSelector(selectProducts);
   const db = firebase.firestore().collection("PRODUCTS");
-  const reserveDB = firebase.firestore().collection("RESERVED");
   const [showBasic, setShowBasic] = React.useState(false);
-  var count = 0;
-  const event = new Date();
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [productPerPage] = React.useState(18);
   const [text, setText] = React.useState("");
+  const {
+    products,
+    selectedCategory,
+    categories,
+    mainList,
+    searchText,
+    commerceProducts,
+  } = useSelector(selectProducts);
+  const indexOfLastProduct = currentPage * productPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productPerPage;
+  const currentProducts = commerceProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
-  const reserveProduct = (item) => {
-    db.doc(item.productID).set({ isReserved: true }, { merge: true });
-    reserveDB.doc(item.productID).set({
-      productID: item.productID,
-      image: item.image,
-      price: item.price,
-      productName: item.productName,
-      isReserved: true,
-      startDate: Date.now(),
-      expiryDate: event.setHours(72),
-    });
-  };
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
@@ -77,13 +85,10 @@ function Products() {
 
   return (
     <main>
-      <div className="container">
-        {/*  Navbar */}
+      <div>
         <MDBNavbar expand="lg" light bgColor="light" className="mt-3 mb-5">
-          {/* Navbar brand */}
           <span className="navbar-brand">Categories:</span>
 
-          {/* Collapse button */}
           <MDBNavbarToggler
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
@@ -93,14 +98,11 @@ function Products() {
             <MDBIcon icon="bars" fas />
           </MDBNavbarToggler>
 
-          {/* Collapsible content */}
           <MDBCollapse navbar show={showBasic}>
-            {/* Links */}
             <ul className="navbar-nav mr-auto">
               {categories.map((item, index) => {
                 return (
                   <li
-                    key={(item) => item.idx.toString()}
                     className="nav-item"
                     style={{
                       opacity: index === selectedCategory ? 1 : 0.5,
@@ -122,7 +124,6 @@ function Products() {
                 );
               })}
             </ul>
-            {/* Links */}
 
             <form className="form-inline">
               <div className="md-form my-0">
@@ -138,39 +139,32 @@ function Products() {
               </div>
             </form>
           </MDBCollapse>
-
-          {/* Collapsible content */}
         </MDBNavbar>
-        {/* /.Navbar */}
 
         <MDBRow>
           <SideBar />
 
           <section className="col-lg-9">
             <div className="row wow fadeIn">
-              {products.map((item, index) => {
+              {currentProducts.map((item, index) => {
+                const { name, media, price, id, categories } = item;
                 return (
-                  <MDBCol className="col-lg-3 col-md-6 col-sm-3 mb-2">
+                  <MDBCol className="col-lg-3 col-md-4 col-sm-6 col-xs-6 mb-3">
                     <MDBCard
+                      key={item}
                       className="card shadow hover-zoom"
-                      style={{ maxWidth: "160px" }}
-                      onClick={() => dispatch(setCurrentProduct(item))}
+                      style={{ maxWidth: "160px", backgroundColor: "#e9f7ef" }}
+                      onClick={() => {
+                        dispatch(setCurrentProduct(item));
+                        dispatch(setSimilarProducts(categories.name));
+                        /* dispatch(setVendorID(vendorID));
+                        dispatch(fetchVendor(vendorID)); */
+                      }}
                     >
-                      <div className="reserve-icon-container">
-                        <MDBBtn
-                          tag="a"
-                          color="none"
-                          className="reserve-icon"
-                          onClick={() => reserveProduct(item)}
-                          style={{ color: "#00675b" }}
-                        >
-                          <FiUnlock size={20} />
-                        </MDBBtn>
-                      </div>
                       <Link to={`/product/${item.productID}`}>
                         <div className={classes.img_box}>
                           <MDBCardImage
-                            src={item.image}
+                            src={media.source}
                             className="img-fluid img"
                             className={classes.img}
                             alt=""
@@ -179,11 +173,15 @@ function Products() {
                       </Link>
 
                       <MDBCardBody>
-                        <h5 className="title">{item.productName}</h5>
+                        <Typography variant="subtitle2" className="title">
+                          {name}
+                        </Typography>
                         <div className="bottom-details">
-                          <h6 className="product-price">
-                            <strong>K{item.price}</strong>
-                          </h6>
+                          <div className="product-price">
+                            <Typography variant="subtitle2">
+                              {price.formatted_with_symbol}
+                            </Typography>
+                          </div>
 
                           <MDBBtn
                             className="shopping-cart"
@@ -206,52 +204,12 @@ function Products() {
           </section>
         </MDBRow>
 
-        {/* <!--Pagination--> */}
-        <nav className="d-flex justify-content-center wow fadeIn">
-          <ul className="pagination pg-blue">
-            {/* <!--Arrow left--> */}
-            <li className="page-item disabled">
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span className="sr-only">Previous</span>
-              </a>
-            </li>
-
-            <li className="page-item active">
-              <a className="page-link" href="#">
-                1<span className="sr-only">(current)</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                4
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                5
-              </a>
-            </li>
-
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span className="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        {/* <!--Pagination--> */}
+        <Pagination
+          productsPerPage={productPerPage}
+          totalProducts={commerceProducts.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
       </div>
     </main>
   );

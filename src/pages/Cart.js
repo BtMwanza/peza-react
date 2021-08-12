@@ -32,6 +32,7 @@ import Operations from "../components/functions/operations";
 import { fetchData } from "./../redux";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
 import { selectSellers } from "./../redux/reducers/VendorSlice";
+import FlutterwaveBtn from "./../lib/flutterwave";
 
 function Cart() {
   const cart = useSelector(selectCart);
@@ -328,9 +329,11 @@ function Cart() {
                 </li>
               </ul>
 
-              <MDBBtn type="button" className="btn btn-primary btn-block">
+              <MDBBtn type="button" className="btn btn-primary btn-block mb-4">
                 go to checkout
               </MDBBtn>
+
+              <FlutterwaveBtn />
             </div>
           </div>
           {/* Card */}

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import firebase from "firebase";
+import commerce from "./../../lib/commercejs";
 
 const db = firebase.firestore().collection("PRODUCTS");
 
@@ -17,21 +18,51 @@ export const isEmptyString = (p) => {
 const initialState = {
   products: [],
   mainList: [],
+  commerceProducts: [],
   recentProducts: [],
   reservedProducts: [],
   categories: [
-    { idx: 0, category: "All" },
-    { idx: 1, category: "Engine & Emissions" },
-    { idx: 2, category: "Lighting" },
-    { idx: 3, category: "Brakes & Suspension" },
-    { idx: 4, category: "Tyres & Rims" },
-    { idx: 5, category: "Wiring" },
-    { idx: 6, category: "Electrical" },
+    {
+      idx: 0,
+      category: "All",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Fall.png?alt=media&token=31bf509f-1ddc-45d6-ba18-70c80dcb3cc8",
+    },
+    {
+      idx: 1,
+      category: "Engine & Emissions",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Fcar-engine.png?alt=media&token=bc532ecd-e352-4772-b856-1efbbef89672",
+    },
+    {
+      idx: 2,
+      category: "Lighting",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Fheadlights-icon.png?alt=media&token=f442b8c4-588c-4db6-a33e-ac5da3b0dabc",
+    },
+    {
+      idx: 3,
+      category: "Brakes & Suspension",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Fdisc-brake.png?alt=media&token=f5c9fae9-7e59-401f-8b98-9dd2e23826a2",
+    },
+    {
+      idx: 4,
+      category: "Tyres & Rims",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Ftyre.png?alt=media&token=ddc10028-fd7d-474e-80d2-2fe6a7b4aaa9",
+    },
+    {
+      idx: 5,
+      category: "Wiring",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Fwire.png?alt=media&token=f61507ad-f3bd-40a0-88a6-5b70638e57d8",
+    },
+    {
+      idx: 6,
+      category: "Electrical",
+      icon: "https://firebasestorage.googleapis.com/v0/b/peza-e3455.appspot.com/o/images%2Ficons%2Faccumulator.png?alt=media&token=f641cc19-228b-40ae-99ea-b59d8c1dffb2",
+    },
   ],
   viewed: [],
   transactions: [],
   amounts: [],
   popular: [],
+  similarProducts: [],
   currentProduct: {},
   currentTransaction: {},
   isLoading: false,
@@ -43,22 +74,10 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk(
   "prodSlice/fetchProducts",
-  () =>
-    new Promise((resolve, reject) => {
-      const getProducts = db
-        .where("isReserved" || "isSold", "!=", true)
-        .onSnapshot(
-          (snapshot) => {
-            resolve(
-              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-            );
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      initialState.products.push(getProducts);
-    })
+  async () => {
+    const response = await commerce.products.list();
+    return response.data;
+  }
 );
 
 // Get recent products from firebase
@@ -213,10 +232,27 @@ export const productSlice = createSlice({
     setAmounts: (state, action) => {
       state.amounts = action.payload;
     },
+    setSimilarProducts: (state, action) => {
+      const productCategory = action.payload;
+
+      let similar = state.mainList.filter(
+        ({ category }) => category === "Tyre & Rims"
+      );
+      state.similarProducts = similar;
+
+      console.log(
+        "SIMILAR: ",
+        state.similarProducts,
+        "&&",
+        "CATEGORY: ",
+        productCategory
+      );
+    },
   },
   extraReducers: {
     [fetchProducts.fulfilled]: (state, action) => {
-      state.products = action.payload;
+      state.commerceProducts = action.payload;
+      console.log("FETCHED: ", action.payload);
     },
     [fetchRecentProducts.fulfilled]: (state, action) => {
       state.recentProducts = action.payload;
@@ -238,6 +274,7 @@ export const {
   setCurrentProduct,
   setCurrentTransaction,
   setAmounts,
+  setSimilarProducts,
 } = productSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

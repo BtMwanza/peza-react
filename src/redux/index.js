@@ -5,6 +5,7 @@ export {
   setCurrentProduct,
   setCurrentTransaction,
   setAmounts,
+  setSimilarProducts,
 } from "./reducers/ProductSlice";
 export {
   addItem,

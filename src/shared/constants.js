@@ -1,8 +1,3 @@
-import { Dimensions } from "react-native";
-
-const WIDTH = Dimensions.get("window").width;
-const HEIGHT = Dimensions.get("window").height;
-
 export const TITLES = {
   login: "Sign in",
   register: "Sign up",
@@ -71,29 +66,39 @@ export const ROUTES = {
 };
 
 export const IMAGES = {
-  bmwEngine: require("./../../img/bmw-engine.png"),
-  boschDoubleIriduimSparkPlug: require("./../../img/bosch-double-iridium-spark-plug.png"),
-  engineValveSprings: require("./../../img/engine-valve-springs.png"),
-  exhaustValveKit: require("./../../img/supertech-inconel-exhaust-valve-kit.png"),
-  boschSparkPlug: require("./../../img/bosch-spark-plug.png"),
-  headlights: require("./../../img/custom-headlights.png"),
-  notAvailable: require("./../../img/not-available.jpg"),
-  carburator: require("./../../img/Carburetor-Dellorto.png"),
-  toyotaCorollaHeadlight03_08: require("./../../img/03-08-toyota-corolla-euro-style-crystal-headlights.png"),
-  falconWilwoodDiscBrake: require("./../../img/xr-xt-xw-xy-falcon-wilwood-355mm-6-piston-disc-brake.png"),
-  fordInjector: require("./../../img/2003-2007-ford-industrial-injector.png"),
-  tempAvatar: require("./../../img/tempAvatar.jpg"),
+  bmwEngine: `require("./../assets/img/bmw-engine.png").default`,
+  boschDoubleIriduimSparkPlug:
+    require("./../assets/img/bosch-double-iridium-spark-plug.png").default,
+  engineValveSprings: require("./../assets/img/engine-valve-springs.png")
+    .default,
+  exhaustValveKit:
+    require("./../assets/img/supertech-inconel-exhaust-valve-kit.png").default,
+  boschSparkPlug: require("./../assets/img/bosch-spark-plug.png").default,
+  headlights: require("./../assets/img/custom-headlights.png").default,
+  notAvailable: require("./../assets/img/not-available.jpg").default,
+  carburator: require("./../assets/img/Carburetor-Dellorto.png").default,
+  toyotaCorollaHeadlight03_08:
+    require("./../assets/img/03-08-toyota-corolla-euro-style-crystal-headlights.png")
+      .default,
+  falconWilwoodDiscBrake:
+    require("./../assets/img/xr-xt-xw-xy-falcon-wilwood-355mm-6-piston-disc-brake.png")
+      .default,
+  fordInjector:
+    require("./../assets/img/2003-2007-ford-industrial-injector.png").default,
+  tempAvatar: require("./../assets/img/tempAvatar.jpg").default,
 
   // ICONS
-  engineIcon: require("./../../img/car-engine.png"),
-  brakesIcon: require("./../../img/disc-brake.png"),
-  headlightIcon: require("./../../img/headlights-icon.png"),
-  wireIcon: require("./../../img/wire.png"),
-  tyreIcon: require("./../../img/tyre.png"),
-  batteryIcon: require("./../../img/accumulator.png"),
+  engineIcon: "./../assets/img/car-engine.png",
+  brakesIcon: "./../assets/img/disc-brake.png",
+  headlightIcon: "./../assets/img/headlights-icon.png",
+  wireIcon: "./../assets/img/wire.png",
+  tyreIcon: "./../assets/img/tyre.png",
+  batteryIcon: "./../assets/img/accumulator.png",
 
   // LOGO
-  logo: require("./../../img/artboard.png"),
+  logo: require("./../assets/img/artboard.png").default,
+  header: require("./../assets/img/julian-hochgesang-1PsOu8gyZIQ-unsplash.jpg")
+    .default,
 };
 
 export const SIZES = {
@@ -121,10 +126,6 @@ export const SIZES = {
   body6: 12,
   body7: 10,
   body8: 8,
-
-  // app dimensions
-  WIDTH,
-  HEIGHT,
 };
 
 export const FONTS = {

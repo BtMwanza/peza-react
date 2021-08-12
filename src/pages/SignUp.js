@@ -37,8 +37,34 @@ import {
 
 import useStyles from "./../css/style";
 import "./../css/App.css";
+import Operations from "../components/functions/operations";
+import Fire from "./../lib/firebaseConfig";
 
 function SignUp() {
+  const [data, setData] = React.useState({
+    displayName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    comfirmPassword: "",
+  });
+
+  const onChangeHandler = (event) => {
+    const { name, value } = event.currentTarget;
+
+    if (name === "userName") {
+      setData({ ...data, displayName: value });
+    } else if (name === "email") {
+      setData({ ...data, email: value });
+    } else if (name === "phoneNumber") {
+      setData({ ...data, phoneNumber: value });
+    } else if (name === "password") {
+      setData({ ...data, password: value });
+    } else if (name === "repeatPassword") {
+      setData({ ...data, comfirmPassword: value });
+    }
+  };
+
   return (
     <div class="tab-content">
       <div
@@ -58,28 +84,52 @@ function SignUp() {
           <p class="text-center">or:</p>
 
           <div class="form-outline mb-4">
-            <input type="text" id="registerName" class="form-control" />
-            <label class="form-label" for="registerName">
-              Name
+            <input
+              type="text"
+              name="userName"
+              id="registerName"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
+            <label class="form-label" for="registerUserName">
+              User name
             </label>
           </div>
 
           <div class="form-outline mb-4">
-            <input type="text" id="registerUsername" class="form-control" />
-            <label class="form-label" for="registerUsername">
-              Username
-            </label>
-          </div>
-
-          <div class="form-outline mb-4">
-            <input type="email" id="registerEmail" class="form-control" />
+            <input
+              type="email"
+              name="email"
+              id="registerEmail"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
             <label class="form-label" for="registerEmail">
               Email
             </label>
           </div>
 
           <div class="form-outline mb-4">
-            <input type="password" id="registerPassword" class="form-control" />
+            <input
+              type="number"
+              name="phoneNumber"
+              id="registerPhoneNumber"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
+            <label class="form-label" for="registerPhoneNumber">
+              Phone number
+            </label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input
+              type="password"
+              name="password"
+              id="registerPassword"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
             <label class="form-label" for="registerPassword">
               Password
             </label>
@@ -88,11 +138,13 @@ function SignUp() {
           <div class="form-outline mb-4">
             <input
               type="password"
+              name="repeatPassword"
               id="registerRepeatPassword"
               class="form-control"
+              onChange={(event) => onChangeHandler(event)}
             />
             <label class="form-label" for="registerRepeatPassword">
-              Repeat password
+              Comfirm password
             </label>
           </div>
 
@@ -110,7 +162,18 @@ function SignUp() {
             </label>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block mb-3">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block mb-3"
+            onClick={() =>
+              Operations.shared.signUp(
+                data.displayName,
+                data.email,
+                data.phoneNumber,
+                data.password
+              )
+            }
+          >
             Sign in
           </button>
         </form>

@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { alpha, makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   nav_root: {
@@ -11,10 +11,92 @@ const useStyles = makeStyles((theme) => ({
     background: "#ffffdf",
     flex: 1,
   },
+  // Prominent navbar
+  grow: {
+    flexGrow: 1,
+    marginBottom: 20,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  navTitle: {
+    display: "flex",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+    flexDirection: "row",
+  },
+  navLink: {
+    display: "flex",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
+    flexDirection: "row",
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
+
+  // Drawer
+  list: {
+    width: 250,
+  },
+  listItem: { color: "#ffffff" },
+  fullList: {
+    width: "auto",
+    backgroundColor: "blue",
+  },
+  // End Drawer
+
   icon: {
     marginRight: "20px",
   },
-  button: {},
   paper: {
     width: 160,
     height: 219,
@@ -47,17 +129,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
-  nav_left: {
-    position: "absolute",
-    borderRadius: theme.shape.borderRadius,
-    right: 0,
-    marginRight: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginRight: theme.spacing(1),
-      width: "auto",
-    },
-  },
+
   button: {
     display: "block",
     marginTop: theme.spacing(2),
@@ -77,41 +149,45 @@ const useStyles = makeStyles((theme) => ({
   control: {
     padding: theme.spacing(2),
   },
+
+  // Product Display
   root2: {
     flexGrow: 1,
   },
   paper2: {
-    width: 160,
-    height: 220,
     padding: theme.spacing(2),
     margin: theme.spacing(2),
-    textAlign: "center",
+    textAlign: "none",
     color: theme.palette.text.secondary,
   },
-  mediaContainer: {
-    height: 100,
+
+  // Product Image
+  image2: {
     width: "100%",
-    objectFit: "contain",
+    height: 180,
+    borderColor: "#000000",
+    borderWidth: 10,
     alignItems: "center",
     justifyContent: "center",
+    padding: theme.spacing(2),
   },
-  media: {
-    height: "100%",
-    width: "100%",
-    objectFit: "contain",
+  imgFit: {
+    margin: "auto",
+    display: "block",
+    maxWidth: "80%",
+    maxHeight: "80%",
+    //objectFit: "contain",
   },
-  card: {
-    width: 160,
+  detailsGrid: {
     padding: theme.spacing(1),
-    margin: theme.spacing(0.2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
   },
-  btns: {
+  categoryRoot: {
     display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    justifyContent: "center",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(0.5),
+    },
   },
 }));
 

@@ -37,8 +37,25 @@ import {
 
 import useStyles from "./../css/style";
 import "./../css/App.css";
+import Operations from "../components/functions/operations";
+import Fire from "./../lib/firebaseConfig";
 
 function SignIn() {
+  const [data, setData] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  const onChangeHandler = (event) => {
+    const { name, value } = event.currentTarget;
+
+    if (name === "email") {
+      setData({ ...data, email: value });
+    } else if (name === "password") {
+      setData({ ...data, password: value });
+    }
+  };
+
   return (
     <div class="tab-content">
       <div
@@ -50,7 +67,11 @@ function SignIn() {
         <form>
           <div class="text-center mb-3">
             <p>Sign in with:</p>
-            <button type="button" class="btn btn-primary btn-floating mx-1">
+            <button
+              type="button"
+              class="btn btn-primary btn-floating mx-1"
+              onClick={() => Fire.shared.googleSignIn(data.email)}
+            >
               <i class="fab fa-google"></i>
             </button>
           </div>
@@ -58,14 +79,26 @@ function SignIn() {
           <p class="text-center">or:</p>
 
           <div class="form-outline mb-4">
-            <input type="email" id="loginName" class="form-control" />
+            <input
+              type="email"
+              name="email"
+              id="loginName"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
             <label class="form-label" for="loginName">
               Email or username
             </label>
           </div>
 
           <div class="form-outline mb-4">
-            <input type="password" id="loginPassword" class="form-control" />
+            <input
+              type="password"
+              name="password"
+              id="loginPassword"
+              class="form-control"
+              onChange={(event) => onChangeHandler(event)}
+            />
             <label class="form-label" for="loginPassword">
               Password
             </label>
@@ -93,7 +126,11 @@ function SignIn() {
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block mb-4">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block mb-4"
+            onClick={() => Operations.shared.signIn(data.email, data.password)}
+          >
             Sign in
           </button>
 

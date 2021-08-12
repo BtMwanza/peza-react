@@ -1,22 +1,14 @@
 import React from "react";
-import {
-  MDBNavbar,
-  MDBNavbarNav,
-  MDBNavbarItem,
-  MDBNavbarLink,
-  MDBNavbarToggler,
-  MDBContainer,
-  MDBIcon,
-} from "mdb-react-ui-kit";
+
+import HEADER from "./../../assets/img/julian-hochgesang-1PsOu8gyZIQ-unsplash.jpg";
 
 function Header() {
   return (
-    <header>
+    <header className="mb-4">
       <div
         className="p-5 text-center bg-image"
         style={{
-          backgroundImage:
-            "url('https://mdbcdn.b-cdn.net/img/new/slides/041.jpg')",
+          backgroundImage: `url(` + HEADER + `)`,
           height: 400,
         }}
       >

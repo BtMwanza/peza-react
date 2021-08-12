@@ -45,45 +45,47 @@ function Auth() {
   };
   return (
     <Container>
-      <Grid xs={12}>
-        <MDBTabs
-          pills
-          className="mb-12"
+      <Grid container spacing={1} justifyContent="center" alignItems="center">
+        <Grid item xs={12}>
+          <MDBTabs
+            pills
+            className="mb-12"
+            style={{ alignItems: "center", justifyContent: "center" }}
+          >
+            <MDBTabsItem>
+              <MDBTabsLink
+                onClick={() => handleBasicClick("login")}
+                active={basicActive === "login"}
+              >
+                Login
+              </MDBTabsLink>
+            </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink
+                onClick={() => handleBasicClick("register")}
+                active={basicActive === "register"}
+              >
+                Register
+              </MDBTabsLink>
+            </MDBTabsItem>
+          </MDBTabs>
+        </Grid>
+
+        <Grid
+          item
+          xs={6}
           style={{ alignItems: "center", justifyContent: "center" }}
         >
-          <MDBTabsItem>
-            <MDBTabsLink
-              onClick={() => handleBasicClick("login")}
-              active={basicActive === "login"}
-            >
-              Login
-            </MDBTabsLink>
-          </MDBTabsItem>
-          <MDBTabsItem>
-            <MDBTabsLink
-              onClick={() => handleBasicClick("register")}
-              active={basicActive === "register"}
-            >
-              Register
-            </MDBTabsLink>
-          </MDBTabsItem>
-        </MDBTabs>
+          <MDBTabsContent>
+            <MDBTabsPane show={basicActive === "login"}>
+              <SignIn />
+            </MDBTabsPane>
+            <MDBTabsPane show={basicActive === "register"}>
+              <SignUp />
+            </MDBTabsPane>
+          </MDBTabsContent>
+        </Grid>
       </Grid>
-
-      <MDBTabsContent>
-        <MDBTabsPane
-          show={basicActive === "login"}
-          style={{ marginRight: 400, marginLeft: 400 }}
-        >
-          <SignIn />
-        </MDBTabsPane>
-        <MDBTabsPane
-          show={basicActive === "register"}
-          style={{ marginRight: 400, marginLeft: 400 }}
-        >
-          <SignUp />
-        </MDBTabsPane>
-      </MDBTabsContent>
     </Container>
   );
 }

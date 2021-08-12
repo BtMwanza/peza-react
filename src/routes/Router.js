@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import { NavBar } from "./../components";
+import { NavBar, ProminentAppBar } from "./../components";
 import {
   Home,
   ProductDetails,
@@ -20,11 +20,17 @@ function NavigationContainer() {
   return (
     <div>
       <BrowserRouter>
-        <NavBar />
+        {/* <NavBar /> */}
+        <ProminentAppBar />
 
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/product/:productId" exact component={ProductDetails} />
+          <Route path="/" hash="Home" exact component={Home} />
+          <Route
+            path="/product/:productId"
+            name="P"
+            exact
+            component={ProductDetails}
+          />
           <Route path="/cart" exact component={Cart} />
           <Route path="/checkout" exact component={Checkout} />
           <Route path="/profile" exact component={Profile} />

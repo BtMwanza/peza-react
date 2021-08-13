@@ -1,23 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn,
-  MDBBtnGroup,
-  MDBBadge,
-  MDBCollapse,
-  MDBInput,
-} from "mdb-react-ui-kit";
+import Button from "@material-ui/core/Button";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 import Operations from "./../components/functions/operations";
 import { selectCart } from "./../redux/reducers/CartSlice";
+import useStyles from "./../css/style";
+import "./../css/App.css";
 
 const FlutterwaveBtn = () => {
   const cart = useSelector(selectCart);
@@ -44,8 +34,11 @@ const FlutterwaveBtn = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   return (
-    <MDBBtn
-      className="btn btn-primary btn-block mb-4"
+    <Button
+      fullWidth
+      variant="contained"
+      color="secondary"
+      style={{ background: "#00675b", marginBottom: 10 }}
       onClick={() => {
         handleFlutterPayment({
           callback: (response) => {
@@ -56,8 +49,8 @@ const FlutterwaveBtn = () => {
         });
       }}
     >
-      Payment with React hooks
-    </MDBBtn>
+      Payment with Flutterwave
+    </Button>
   );
 };
 

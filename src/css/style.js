@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
   // Prominent navbar
   grow: {
     flexGrow: 1,
-    marginBottom: 20,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -188,6 +187,19 @@ const useStyles = makeStyles((theme) => ({
     "& > *": {
       margin: theme.spacing(0.5),
     },
+  },
+  cartImage: {
+    width: 128,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+  },
+  cartImg: {
+    margin: "auto",
+    display: "block",
+    maxWidth: "80%",
+    maxHeight: "80%",
   },
 }));
 

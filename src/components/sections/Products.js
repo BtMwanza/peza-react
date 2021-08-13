@@ -20,7 +20,6 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBCardTitle,
   MDBCardImage,
   MDBBtn,
   MDBIcon,
@@ -66,7 +65,7 @@ function Products() {
   } = useSelector(selectProducts);
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts = commerceProducts.slice(
+  const currentProducts = products.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -141,72 +140,9 @@ function Products() {
           </MDBCollapse>
         </MDBNavbar>
 
-        <MDBRow>
-          <SideBar />
-
-          <section className="col-lg-9">
-            <div className="row wow fadeIn">
-              {currentProducts.map((item, index) => {
-                const { name, media, price, id, categories } = item;
-                return (
-                  <MDBCol className="col-lg-3 col-md-4 col-sm-6 col-xs-6 mb-3">
-                    <MDBCard
-                      key={item}
-                      className="card shadow hover-zoom"
-                      style={{ maxWidth: "160px", backgroundColor: "#e9f7ef" }}
-                      onClick={() => {
-                        dispatch(setCurrentProduct(item));
-                        dispatch(setSimilarProducts(categories.name));
-                        /* dispatch(setVendorID(vendorID));
-                        dispatch(fetchVendor(vendorID)); */
-                      }}
-                    >
-                      <Link to={`/product/${item.productID}`}>
-                        <div className={classes.img_box}>
-                          <MDBCardImage
-                            src={media.source}
-                            className="img-fluid img"
-                            className={classes.img}
-                            alt=""
-                          />
-                        </div>
-                      </Link>
-
-                      <MDBCardBody>
-                        <Typography variant="subtitle2" className="title">
-                          {name}
-                        </Typography>
-                        <div className="bottom-details">
-                          <div className="product-price">
-                            <Typography variant="subtitle2">
-                              {price.formatted_with_symbol}
-                            </Typography>
-                          </div>
-
-                          <MDBBtn
-                            className="shopping-cart"
-                            tag="a"
-                            color="none"
-                            style={{ color: "#00675b" }}
-                            onClick={() =>
-                              Operations.shared.toggleCart(item, cart, dispatch)
-                            }
-                          >
-                            <FiShoppingBag size={20} />
-                          </MDBBtn>
-                        </div>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </MDBCol>
-                );
-              })}
-            </div>
-          </section>
-        </MDBRow>
-
         <Pagination
           productsPerPage={productPerPage}
-          totalProducts={commerceProducts.length}
+          totalProducts={products.length}
           paginate={paginate}
           currentPage={currentPage}
         />

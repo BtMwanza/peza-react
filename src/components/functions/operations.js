@@ -57,9 +57,11 @@ class Operations {
 
   getVendorName = (item, vendors) => {
     let currentID = item.vendorID;
+    console.log("ID: ", currentID);
 
     if (currentID) {
       let filter = vendors.find(({ uid }) => uid === currentID);
+      console.log("VENDOR: ", filter.displayName);
 
       return filter.displayName;
     }

@@ -98,7 +98,6 @@ function SideBar() {
     minMaxPrices();
     setMinPrice(minAmount);
     setMaxPrice(maxAmount);
-    console.log("CARS: ", Cars);
   }, []);
 
   return (

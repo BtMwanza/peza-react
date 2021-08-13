@@ -64,6 +64,7 @@ export const fetchVendors = createAsyncThunk(
             location: doc.data().location,
           });
         });
+        console.log(data);
         return data;
       });
     const vendors = await getVendor;

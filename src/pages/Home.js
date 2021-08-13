@@ -86,9 +86,8 @@ function Home() {
 
   return (
     <div>
-      <Container>
-        <Products />
-      </Container>
+      <Products2 />
+
       <Footer />
     </div>
   );

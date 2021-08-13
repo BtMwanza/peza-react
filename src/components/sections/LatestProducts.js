@@ -9,6 +9,9 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import IconButton from "@material-ui/core/IconButton";
+import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from "react-redux";
 import { FiLock, FiUnlock, FiShoppingBag } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -71,60 +74,70 @@ function LatestProducts() {
   } = useSelector(selectProducts);
 
   return (
-    <div>
+    <Container>
       <Typography variant="h4" component="h4" className="h2 text-center mb-4">
         RECENT PRODUCTS
       </Typography>
-      <div className="col-lg-12">
-        <div className="row wow fadeIn">
+      <Grid container xs={12} spacing={4}>
+        <Grid item xs={6} sm={9} md={6}>
           {recentProducts.map((item, index) => {
+            const { image, productName, price, category, year } = item;
             return (
-              <MDBCol className="col-lg-2 col-md-3 col-sm-2 col-xs-2 mb-3">
-                <MDBCard
-                  key={item.productID}
-                  className="card shadow hover-zoom"
-                  style={{ maxWidth: "160px", backgroundColor: "#e9f7ef" }}
-                  onClick={() => {
-                    dispatch(setCurrentProduct(item));
-                    dispatch(setSimilarProducts(item.category));
+              <Paper className="card-background shadow hover-zoom">
+                <Grid
+                  item
+                  xs
+                  direction="column"
+                  style={{
+                    backgroundColor: "#d1f2eb",
+                    minHeight: 210,
                   }}
                 >
-                  {/* <div className="reserve-icon-container">
-                        <MDBBtn
-                          tag="a"
-                          color="none"
-                          className="reserve-icon"
-                          onClick={() => reserveProduct(item)}
-                          style={{ color: "#00675b" }}
-                        >
-                          <FiUnlock size={20} />
-                        </MDBBtn>
-                      </div> */}
-                  <Link to={`/product/${item.productID}`}>
-                    <div className={classes.img_box}>
-                      <MDBCardImage
-                        src={item.image}
-                        className="img-fluid img"
-                        className={classes.img}
-                        alt=""
-                      />
-                    </div>
-                  </Link>
+                  <div className={classes.image2}>
+                    <img className={classes.imgFit} alt="complex" src={image} />
+                  </div>
+                  {year !== "" ? (
+                    <Chip label={year} size="small" color="secondary" />
+                  ) : (
+                    <div></div>
+                  )}
+                </Grid>
 
-                  <MDBCardBody>
-                    <h5 className="title text-center">{item.productName}</h5>
-
-                    <Typography className="text-center">
-                      <strong>K{item.price}</strong>
+                <Grid item xs container direction="column">
+                  <Grid item xs className={classes.detailsGrid}>
+                    <Typography variant="subtitle2" className="title">
+                      {productName}
                     </Typography>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
+                    <Typography variant="caption">{category}</Typography>
+                    <Typography variant="subtitle2" gutterBottom>
+                      K{price}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    style={{
+                      backgroundColor: "#bfc9ca",
+                    }}
+                  >
+                    {/* <CardActions style={{}}>
+                            <IconButton>
+                              <FiUnlock color="#00675b" size={20} />
+                            </IconButton>
+                            <IconButton>
+                              <FiCreditCard color="#00675b" size={20} />
+                            </IconButton>
+                            <IconButton>
+                              <FiShoppingBag color="#00675b" size={20} />
+                            </IconButton>
+                          </CardActions> */}
+                  </Grid>
+                </Grid>
+              </Paper>
             );
           })}
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 

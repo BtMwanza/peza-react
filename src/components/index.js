@@ -1,5 +1,4 @@
-export { default as NavBar } from "./sections/NavBar";
-export { default as ProminentAppBar } from "./sections/NavBar2";
+export { default as ProminentAppBar } from "./sections/NavBar";
 
 export { default as Header } from "./sections/Header";
 export { default as Footer } from "./sections/Footer";

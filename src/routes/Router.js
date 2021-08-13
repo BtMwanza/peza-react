@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import { NavBar, ProminentAppBar } from "./../components";
+import { ProminentAppBar } from "./../components";
 import {
   Home,
   ProductDetails,
@@ -20,7 +20,6 @@ function NavigationContainer() {
   return (
     <div>
       <BrowserRouter>
-        {/* <NavBar /> */}
         <ProminentAppBar />
 
         <Switch>

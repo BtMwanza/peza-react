@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import firebase from "firebase";
-import commerce from "./../../lib/commercejs";
+import { btCommerce, ltCommerce } from "./../../lib/commercejs";
 
 const db = firebase.firestore().collection("PRODUCTS");
 
@@ -75,8 +75,10 @@ const initialState = {
 export const fetchProducts = createAsyncThunk(
   "prodSlice/fetchProducts",
   async () => {
-    const response = await commerce.products.list();
-    return response.data;
+    /* const response1 = await btCommerce.products.list();
+    const response2 = await ltCommerce.products.list();
+
+    return response1.data && response2.data; */
   }
 );
 

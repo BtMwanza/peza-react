@@ -86,7 +86,9 @@ function Home() {
 
   return (
     <div>
-      <Products2 />
+      <Container>
+        <Products2 />
+      </Container>
 
       <Footer />
     </div>

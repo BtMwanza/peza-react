@@ -75,14 +75,27 @@ function LatestProducts() {
 
   return (
     <Container>
-      <Typography variant="h4" component="h4" className="h2 text-center mb-4">
-        RECENT PRODUCTS
-      </Typography>
-      <Grid container xs={12} spacing={4}>
-        <Grid item xs={6} sm={9} md={6}>
-          {recentProducts.map((item, index) => {
-            const { image, productName, price, category, year } = item;
-            return (
+      <Grid
+        container
+        spacing={4}
+        style={{ marginBottom: 20 }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={12}>
+          <Typography
+            variant="h4"
+            component="h4"
+            className="h2 text-center mb-4"
+          >
+            RECENT PRODUCTS
+          </Typography>
+        </Grid>
+
+        {recentProducts.map((item, index) => {
+          const { image, productName, price, category, year } = item;
+          return (
+            <Grid item xs={12} md={3} sm={12} lg={3}>
               <Paper className="card-background shadow hover-zoom">
                 <Grid
                   item
@@ -118,24 +131,12 @@ function LatestProducts() {
                     style={{
                       backgroundColor: "#bfc9ca",
                     }}
-                  >
-                    {/* <CardActions style={{}}>
-                            <IconButton>
-                              <FiUnlock color="#00675b" size={20} />
-                            </IconButton>
-                            <IconButton>
-                              <FiCreditCard color="#00675b" size={20} />
-                            </IconButton>
-                            <IconButton>
-                              <FiShoppingBag color="#00675b" size={20} />
-                            </IconButton>
-                          </CardActions> */}
-                  </Grid>
+                  ></Grid>
                 </Grid>
               </Paper>
-            );
-          })}
-        </Grid>
+            </Grid>
+          );
+        })}
       </Grid>
     </Container>
   );

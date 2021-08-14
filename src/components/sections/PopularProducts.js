@@ -72,36 +72,61 @@ function PopularProducts() {
     popular,
   } = useSelector(selectProducts);
   const breakpointColumnsObj = {
-    default: 5,
+    default: 4,
     1100: 3,
     700: 2,
     500: 1,
   };
 
   return (
-    <div className="mb-4">
-      <Typography variant="h4" component="h4" className="text-center mb-4">
-        POPULAR PRODUCTS
-      </Typography>
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
-        {popular.map((item) => (
-          <Paper key={item.product.productID}>
-            <Typography className="text-center">
-              {item.product.productName}
-            </Typography>
-            <hr />
-            <div className={classes.img_box}>
-              <img className={classes.img} src={item.product.image} />
-            </div>
-            <Typography>{item.desc}</Typography>
-          </Paper>
-        ))}
-      </Masonry>
-    </div>
+    <Container>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h4" component="h4" className="text-center mb-4">
+            POPULAR PRODUCTS
+          </Typography>
+        </Grid>
+      </Grid>
+      <div className="mb-4">
+        <Masonry
+          breakpointCols={breakpointColumnsObj}
+          className="my-masonry-grid"
+          columnClassName="my-masonry-grid_column"
+        >
+          {popular.map((item) => {
+            const { product } = item;
+            return (
+              <Paper className="shadow hover-zoom" key={item.product.productID}>
+                <Grid>
+                  <Typography
+                    variant="subtitle2"
+                    className="text-center"
+                    gutterBottom
+                  >
+                    {item.product.productName}
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  item
+                  xs
+                  direction="column"
+                  style={{
+                    backgroundColor: "#d1f2eb",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <div className={classes.img_box}>
+                    <img className={classes.img} src={item.product.image} />
+                  </div>
+                </Grid>
+              </Paper>
+            );
+          })}
+        </Masonry>
+      </div>
+    </Container>
   );
 }
 

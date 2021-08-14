@@ -10,5 +10,6 @@ export { default as Products } from "./sections/Products";
 export { default as Products2 } from "./sections/Products2";
 export { default as LatestProducts } from "./sections/LatestProducts";
 export { default as PopularProducts } from "./sections/PopularProducts";
+export { default as ImageSection } from "./sections/ImageSection";
 
 export { default as Pagination } from "./sections/Pagination";

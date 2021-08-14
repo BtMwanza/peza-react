@@ -65,7 +65,7 @@ function Cart() {
   const toggleShow = () => setShowShow(!showShow);
 
   return (
-    <Grid container>
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={12} sm={9} md={9}>
         <Paper className={classes.paper2}>
           {cart.map((item, index) => {

@@ -96,25 +96,30 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: "20px",
   },
-  paper: {
-    width: 160,
-    height: 219,
-    padding: theme.spacing(2),
-    textAlign: "center",
+  paperHeader: {
+    padding: theme.spacing(0),
+    margin: theme.spacing(2),
+    textAlign: "none",
     color: theme.palette.text.secondary,
   },
+
   img_box: {
-    height: 100,
+    height: "100%",
     width: "100%",
     objectFit: "contain",
     alignItems: "center",
     justifyContent: "center",
   },
   img: {
-    height: "100%",
-    width: "100%",
-    objectFit: "contain",
+    margin: "auto",
+    display: "block",
+    maxWidth: "50%",
+    maxHeight: "50%",
+    objectFit: "cover",
+    alignItems: "center",
+    justifyContent: "center",
   },
+
   img_details: {
     height: 400,
     width: "100%",
@@ -164,8 +169,6 @@ const useStyles = makeStyles((theme) => ({
   image2: {
     width: "100%",
     height: 180,
-    borderColor: "#000000",
-    borderWidth: 10,
     alignItems: "center",
     justifyContent: "center",
     padding: theme.spacing(2),
@@ -175,6 +178,20 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     maxWidth: "80%",
     maxHeight: "80%",
+    //objectFit: "contain",
+  },
+  detailsImage: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+  },
+  detailsImgFit: {
+    margin: "auto",
+    display: "block",
+    maxWidth: "250%",
+    maxHeight: "250%",
     //objectFit: "contain",
   },
   detailsGrid: {
@@ -200,6 +217,19 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     maxWidth: "80%",
     maxHeight: "80%",
+  },
+
+  // Image list
+  imageRoot: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  imageList: {
+    width: "auto",
+    height: 450,
   },
 }));
 

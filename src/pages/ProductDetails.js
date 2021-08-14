@@ -3,6 +3,20 @@ import { useParams } from "react-router-dom";
 import firebase from "firebase/app";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import IconButton from "@material-ui/core/IconButton";
+import Chip from "@material-ui/core/Chip";
+import { FiShoppingBag, FiLock, FiUnlock } from "react-icons/fi";
 import {
   MDBContainer,
   MDBRow,
@@ -75,79 +89,105 @@ function ProductDetails() {
   }
 
   return (
-    <main>
-      {/* <MDBRow>
-          <MDBCol className="d-flex justify-content-center">
-            <h2>{currentProduct.productName}</h2>
-          </MDBCol>
-        </MDBRow>
-        <MDBRow className="row wow fadeIn">
-          <MDBCol className="col-md-6 mb-4">
-            <MDBCardImage
-              src={currentProduct.image}
-              className="img-fluid"
-              alt=""
-            />
-          </MDBCol>
-          <MDBCol className="col-md-6 mb-4">
-            <MDBCol className="p-4">
-              <MDBCol className="mb-4">
-                <MDBBadge color="info" className="badge purple ms-1">
-                  {currentProduct.category}
-                </MDBBadge>
+    <Container>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={12}>
+          <Paper className={classes.paper2}>
+            <Typography variant="h5" className="d-flex justify-content-center">
+              {currentProduct.productName}
+            </Typography>
+          </Paper>
+        </Grid>
 
-                <MDBBadge color="primary" className="badge blue ms-1">
-                  View Vendor
-                </MDBBadge>
-              </MDBCol>
-              <div className="lead">
-                {currentProduct.oldPrice !== undefined ? (
-                  <span className="mr-1">
-                    <del>$200</del>
-                  </span>
-                ) : (
-                  <span className="mr-1"></span>
-                )}
-                <h4>K{currentProduct.price}</h4>
-              </div>
-              <p className="lead font-weight-bold">Description</p>
-              <p>{currentProduct.desc}</p>
-              <MDBCol className="d-flex justify-content-between">
-                <MDBBtn
-                  className="btn btn-primary btn-md my-0 p ms-1"
-                  type="submit"
-                  onClick={() => {
-                    Operations.shared.toggleCart(
-                      currentProduct,
-                      cart,
-                      dispatch
-                    );
-                  }}
-                >
-                  <i className="fas fa-shopping-cart ml-1"></i>
-                </MDBBtn>
-                <MDBBtn
-                  className="btn btn-secondary btn-md my-0 p"
-                  type="submit"
+        <Grid container item xs spacing={2}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            direction="column"
+            style={{
+              backgroundColor: "#d1f2eb",
+            }}
+          >
+            <div className={classes.detailsImage}>
+              <img
+                className={classes.detailsImgFit}
+                alt={currentProduct.productName}
+                src={currentProduct.image}
+              />
+            </div>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6}>
+            <Grid item>
+              <Chip
+                label={currentProduct.category}
+                size="small"
+                color="secondary"
+              />
+              <Chip label="View vendor" size="small" color="secondary" />
+            </Grid>
+            <Typography variant="subtitle2" gutterBottom>
+              {currentProduct.oldPrice !== undefined ? (
+                <span className="mr-1">
+                  <del>$200</del>
+                </span>
+              ) : (
+                <span className="mr-1"></span>
+              )}
+            </Typography>
+            <Typography variant="subtitle2">K{currentProduct.price}</Typography>
+            <Typography>Description</Typography>
+            <Typography gutterBottom>{currentProduct.desc}</Typography>
+
+            <Grid className="d-flex justify-content-between">
+              <ButtonGroup
+                variant="text"
+                color="primary"
+                aria-label="text primary button group"
+              >
+                <Button>
+                  <FiShoppingBag
+                    size={20}
+                    onClick={() => {
+                      Operations.shared.toggleCart(
+                        currentProduct,
+                        cart,
+                        dispatch
+                      );
+                    }}
+                  />
+                </Button>
+
+                <Button
                   onClick={() =>
                     Operations.shared.reserveProduct(currentProduct, reserved)
                   }
                 >
-                  {currentProduct.isReserved === false ? (
-                    <i className="fas fa-unlock ml-1"></i>
+                  {currentProduct.isReserved === undefined || false ? (
+                    <FiLock size={20} />
                   ) : (
-                    <i className="fas fa-lock ml-1"></i>
+                    <FiLock size={20} />
                   )}
-                </MDBBtn>
-              </MDBCol>
-            </MDBCol>
-          </MDBCol>
-        </MDBRow>
-        <hr />
+                </Button>
+              </ButtonGroup>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <hr />
+      <Grid item xs={12} className="text-center">
+        <Typography variant="h6" className="my-4 h3">
+          Additional information{" "}
+        </Typography>
+        <Typography variant="body5"> {currentProduct.extraInfo}</Typography>
+      </Grid>
+      <main>
         <MDBRow className="row d-flex justify-content-center wow fadeIn">
-          <MDBCol className="col-md-6 text-center">
-            <h4 className="my-4 h4">Additional information</h4>
-            <p>{currentProduct.extraInfo}</p>
+          <MDBCol>
+            <h4></h4>
+            <p></p>
           </MDBCol>
         </MDBRow>
         <hr />
@@ -162,12 +202,11 @@ function ProductDetails() {
                   onClick={() => dispatch(setCurrentProduct(item))}
                 >
                   <Link to={`/product/${item.productID}`}>
-                    <div className={classes.img_box}>
-                      <MDBCardImage
+                    <div className={classes.image2}>
+                      <img
+                        className={classes.imgFit}
+                        alt="complex"
                         src={item.image}
-                        className="img-fluid img"
-                        className={classes.img}
-                        alt=""
                       />
                     </div>
                   </Link>
@@ -184,115 +223,11 @@ function ProductDetails() {
               </MDBCol>
             );
           })}
-        </MDBRow> */}
+        </MDBRow>
 
-      {/* REVIEWS */}
-      <MDBRow>
-        <MDBCol>
-          <section id="section-comments" className="mb-4">
-            <div className="text-center font-weight-bold">
-              <span>4</span> comments
-            </div>
-
-            <div className="media d-block d-md-flex mt-4">
-              <img
-                className="img-fluid img"
-                className={classes.img}
-                src="https://mdbootstrap.com/img/Photos/Avatars/img (20).jpg"
-                alt="Generic placeholder image"
-              />
-              <div className="media-body text-center text-md-left ml-md-3 ml-0">
-                <p className="font-weight-bold my-0">
-                  Miley Steward
-                  <a href="" className="pull-right ml-1">
-                    <i className="fas fa-reply"></i>
-                  </a>
-                </p>
-                Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum.
-                <div className="media d-block d-md-flex mt-4">
-                  <img
-                    className="img-fluid img"
-                    className={classes.img}
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img (27).jpg"
-                    alt="Generic placeholder image"
-                  />
-                  <div className="media-body text-center text-md-left ml-md-3 ml-0">
-                    <p className="font-weight-bold my-0">
-                      Tommy Smith
-                      <a href="" className="pull-right ml-1">
-                        <i className="fas fa-reply"></i>
-                      </a>
-                    </p>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo.
-                  </div>
-                </div>
-                <div className="form-group mt-4">
-                  <label for="quickReplyFormComment">Your comment</label>
-                  <textarea
-                    className="form-control"
-                    id="quickReplyFormComment"
-                    rows="5"
-                  ></textarea>
-
-                  <div className="text-center my-4">
-                    <button className="btn btn-info btn-sm" type="submit">
-                      Post
-                    </button>
-                  </div>
-                </div>
-                <div className="media d-block d-md-flex mt-3">
-                  <img
-                    className="img-fluid img"
-                    className={classes.img}
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img (21).jpg"
-                    alt="Generic placeholder image"
-                  />
-                  <div className="media-body text-center text-md-left ml-md-3 ml-0">
-                    <p className="font-weight-bold my-0">
-                      Sylvester the Cat
-                      <a href="" className="pull-right ml-1">
-                        <i className="fas fa-reply"></i>
-                      </a>
-                    </p>
-                    Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-                    amet, consectetur, adipisci velit, sed quia non numquam eius
-                    modi tempora incidunt ut labore et dolore magnam aliquam
-                    quaerat voluptatem.
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="media d-block d-md-flex mt-3">
-              <img
-                className="img-fluid img"
-                className={classes.img}
-                src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg"
-                alt="Generic placeholder image"
-              />
-              <div className="media-body text-center text-md-left ml-md-3 ml-0">
-                <p className="font-weight-bold my-0">
-                  Caroline Horwitz
-                  <a href="" className="pull-right ml-1">
-                    <i className="fas fa-reply"></i>
-                  </a>
-                </p>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati cupiditate
-                non provident, similique sunt in culpa officia deserunt mollitia
-                animi, id est laborum et dolorum fuga.
-              </div>
-            </div>
-          </section>
-        </MDBCol>
-      </MDBRow>
-    </main>
+        {/* REVIEWS */}
+      </main>
+    </Container>
   );
 }
 

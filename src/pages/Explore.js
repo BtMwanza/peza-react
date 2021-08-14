@@ -25,6 +25,7 @@ import {
   Footer,
   LatestProducts,
   PopularProducts,
+  ImageSection,
   SideBar2,
   Categories,
 } from "./../components";
@@ -47,9 +48,11 @@ function Explore() {
     <div>
       <Header />
 
-      <LatestProducts />
-      <PopularProducts />
-
+      <Container>
+        <LatestProducts />
+        <PopularProducts />
+        {/* <ImageSection /> */}
+      </Container>
       <Footer />
     </div>
   );

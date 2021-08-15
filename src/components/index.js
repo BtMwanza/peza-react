@@ -13,3 +13,8 @@ export { default as PopularProducts } from "./sections/PopularProducts";
 export { default as ImageSection } from "./sections/ImageSection";
 
 export { default as Pagination } from "./sections/Pagination";
+
+// Account Tabs
+export { default as UserDetails } from "./sections/Account/UserDetails";
+export { default as UserOrders } from "./sections/Account/UserOrders";
+export { default as UserPaymentMethods } from "./sections/Account/UserPaymentMethods";

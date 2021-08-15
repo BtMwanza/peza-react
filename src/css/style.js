@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
     width: 300,
   },
   container: {
-    background: "#ffffdf",
     flex: 1,
+    marginTop: 20,
   },
   // Prominent navbar
   grow: {
@@ -230,6 +230,17 @@ const useStyles = makeStyles((theme) => ({
   imageList: {
     width: "auto",
     height: 450,
+  },
+
+  // Account Vetical Tab
+  accountRoot: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    height: "auto",
+  },
+  tabs: {
+    borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
 

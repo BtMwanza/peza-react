@@ -6,40 +6,35 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import TextField from "@material-ui/core/TextField";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
 import { MDBInput, MDBInputGroup } from "mdb-react-ui-kit";
 
-import { selectCart } from "./../../redux/reducers/CartSlice";
-import { selectSellers } from "./../../redux/reducers/VendorSlice";
-import { selectProducts } from "./../../redux/reducers/ProductSlice";
-import Operations from "../functions/operations";
-import useStyles from "./../../css/style";
-import "./../../css/App.css";
-import Cars from "./../../lib/cars.json";
+import { selectCart } from "./../../../redux/reducers/CartSlice";
+import { selectMerchants } from "./../../../redux/reducers/MerchantSlice";
+import { selectProducts } from "./../../../redux/reducers/ProductSlice";
+import useStyles from "./../../../css/style";
+import "./../../../css/App.css";
+import Cars from "./../../../lib/cars.json";
+import Merchants from "./../../../lib/merchants.json";
 import {
   filterList,
   searchList,
-  fetchData,
-  setVendorID,
+  setMerchantID,
   setCurrentProduct,
-} from "./../../redux";
+  filterMerchants,
+  filterMake,
+  filterModel,
+  filterPrice,
+} from "./../../../redux";
 
 function SideBar() {
   const cart = useSelector(selectCart);
-  const { vendors } = useSelector(selectSellers);
+  const { merchants } = useSelector(selectMerchants);
   const { products, amounts, mainList } = useSelector(selectProducts);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [text, setText] = React.useState("");
   var minAmount = Number.POSITIVE_INFINITY;
   var maxAmount = Number.NEGATIVE_INFINITY;
   const [range, setRange] = React.useState([0, 20000]);
@@ -47,18 +42,32 @@ function SideBar() {
   const [maxPrice, setMaxPrice] = React.useState(20000);
   const [make, setMake] = React.useState("");
   const [model, setModel] = React.useState("");
+  const [merchant, setMerchant] = React.useState("");
   const [openMake, setOpenMake] = React.useState(false);
   const [openModel, setOpenModel] = React.useState(false);
+  const [openMerchant, setOpenMerchant] = React.useState(false);
   const [minRange, maxRange] = range;
+
+  const onChangeHandler = (event) => {
+    const { name, value } = event.currentTarget;
+
+    if (name === "searchInput") {
+      setText(value);
+      dispatch(searchList(value));
+      console.log("TEXT: ", value);
+    }
+  };
 
   const handleMakeChange = (event) => {
     setMake(event.target.value);
-    console.log("MAKE: ", event.target.value);
   };
 
   const handleModelChange = (event) => {
     setModel(event.target.value);
-    console.log("MODEL: ", event.target.value);
+  };
+
+  const handleMerchantChange = (event) => {
+    setMerchant(event.target.value);
   };
 
   const handleMakeOpen = () => {
@@ -69,12 +78,20 @@ function SideBar() {
     setOpenModel(true);
   };
 
+  const handleMerchantOpen = () => {
+    setOpenMerchant(true);
+  };
+
   const handleMakeClose = () => {
     setOpenMake(false);
   };
 
   const handleModelClose = () => {
     setOpenModel(false);
+  };
+
+  const handleMerchantClose = () => {
+    setOpenMerchant(false);
   };
 
   const onPriceRangeChange = (event, newValue) => {
@@ -108,10 +125,27 @@ function SideBar() {
         {/* Card */}
         <div className="mb-3">
           <h3>Filters</h3>
-          <div className="pt-4">
+          <div>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                name="searchInput"
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+                value={text}
+                onChange={onChangeHandler}
+              />
+            </div>
             <Typography id="range-slider" gutterBottom>
               Price range
             </Typography>
+
             <Slider
               value={range}
               min={minPrice}
@@ -184,6 +218,38 @@ function SideBar() {
                     </MenuItem>
                   ))
                 )}
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel id="model-controlled-open-select-label">
+                Select merchant
+              </InputLabel>
+              <Select
+                labelId="model-controlled-open-select-label"
+                id="model-controlled-open-select"
+                name="model"
+                open={openMerchant}
+                onClose={handleMerchantClose}
+                onOpen={handleMerchantOpen}
+                value={merchant}
+                onChange={handleMerchantChange}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {Merchants.map((item) => {
+                  const { idx, title, id } = item;
+                  return (
+                    <MenuItem
+                      onClick={() => dispatch(filterMerchants(id))}
+                      key={idx}
+                      value={title}
+                    >
+                      {title}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
           </div>

@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import Avatar from "@material-ui/core/Avatar";
 import SearchIcon from "@material-ui/icons/Search";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Drawer from "@material-ui/core/Drawer";
@@ -30,14 +31,16 @@ import FolderIcon from "@material-ui/icons/Folder";
 import { withRouter } from "react-router-dom";
 import clsx from "clsx";
 
-import { selectCart } from "../../redux/reducers/CartSlice";
-import { selectProducts } from "../../redux/reducers/ProductSlice";
-import useStyles from "../../css/style";
-import "./../../css/App.css";
+import { selectCart } from "./../../../redux/reducers/CartSlice";
+import { selectProducts } from "./../../../redux/reducers/ProductSlice";
+import { selectAuth } from "./../../../redux/reducers/AuthSlice";
+import useStyles from "./../../../css/style";
+import "./../../../css/App.css";
 
 function ProminentAppBar(props) {
   const { history, name, location } = props;
   const cart = useSelector(selectCart);
+  const { currentUser } = useSelector(selectAuth);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuEl, setMenuEl] = React.useState(null);
@@ -113,14 +116,19 @@ function ProminentAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem
-        onClick={() => {
-          history.push("/profile");
-          handleMenuClose();
-        }}
-      >
-        Profile
-      </MenuItem>
+      {currentUser.map((item) => {
+        const { displayName } = item;
+        return (
+          <MenuItem
+            onClick={() => {
+              history.push("/profile");
+              handleMenuClose();
+            }}
+          >
+            {displayName}
+          </MenuItem>
+        );
+      })}
       <MenuItem
         onClick={() => {
           history.push("/cart");
@@ -173,22 +181,37 @@ function ProminentAppBar(props) {
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
-      <MenuItem
-        onClick={() => {
-          history.push("/profile");
-          handleMobileMenuClose();
-        }}
-      >
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+
+      {currentUser.map((item) => {
+        const { key, displayName, avatar } = item;
+        return (
+          <MenuItem
+            key={key}
+            onClick={() => {
+              history.push("/profile");
+              handleMobileMenuClose();
+            }}
+          >
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              {avatar !== null ? (
+                <AccountCircle />
+              ) : (
+                <Avatar
+                  className={classes.smallAvatar}
+                  alt="My Avatar"
+                  src={avatar}
+                />
+              )}
+            </IconButton>
+            <p>{displayName}</p>
+          </MenuItem>
+        );
+      })}
     </Menu>
   );
 
@@ -242,17 +265,6 @@ function ProminentAppBar(props) {
             {location.pathname}
           </Typography>
 
-          <div className={classes.search}>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
@@ -274,16 +286,30 @@ function ProminentAppBar(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={() => history.push("/profile")}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+
+            {currentUser.map((item) => {
+              const { key, displayName, avatar } = item;
+              return (
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => history.push("/profile")}
+                  color="inherit"
+                >
+                  {avatar !== null ? (
+                    <AccountCircle />
+                  ) : (
+                    <Avatar
+                      className={classes.smallAvatar}
+                      alt="My Avatar"
+                      src={avatar}
+                    />
+                  )}
+                </IconButton>
+              );
+            })}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

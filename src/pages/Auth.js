@@ -73,7 +73,7 @@ function Auth() {
 
         <Grid
           item
-          xs={6}
+          xs
           style={{ alignItems: "center", justifyContent: "center" }}
         >
           <MDBTabsContent>

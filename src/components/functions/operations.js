@@ -14,15 +14,15 @@ const reserveDB = firebase.firestore().collection("RESERVED");
 const event = new Date();
 
 class Operations {
-  toggleCart = (item, cart, dispatch) => {
+  toggleCart = (item, index, cart, dispatch) => {
     try {
       const added = cart.find((p) => p.productID === item.productID);
       if (!added) {
         dispatch(addItem(item));
-        console.log(item);
+        console.log("ADDED: ", item);
       } else {
-        dispatch(deleteItem(item));
-        console.log(item);
+        dispatch(deleteItem(item.productID));
+        console.log("DELETED: ", item);
       }
     } catch (error) {
       console.log(error);
@@ -70,6 +70,7 @@ class Operations {
   signIn = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email.trim(), password);
+      console.log("FUNCTION EMAIL: ", email);
     } catch (error) {
       alert(error);
     }

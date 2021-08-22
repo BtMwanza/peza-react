@@ -14,6 +14,7 @@ import {
   VendorInfo,
   Explore,
   Auth,
+  FourZeroFour,
 } from "./../pages";
 
 function NavigationContainer() {
@@ -40,7 +41,7 @@ function NavigationContainer() {
           <Route path="/vendor" exact component={VendorInfo} />
           <Route path="/explore" exact component={Explore} />
 
-          <Route>404 Not Found!</Route>
+          <Route path="*" component={FourZeroFour} />
         </Switch>
       </BrowserRouter>
     </div>

@@ -1,34 +1,23 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import firebase from "firebase/app";
-import Fire from "./lib/firebaseConfig";
 
+import Fire from "./lib/firebaseConfig";
 import { store, persistor } from "./redux/Store";
-import NavigationContainer from "./routes/Router";
+import AppRouter from "./routes/AppRouter";
+import AuthRouter from "./routes/AuthRouter";
+import { ProminentAppBar } from "./components";
 
 function App() {
-  const [user, setUser] = React.useState("");
-
-  function authListener() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser("");
-      }
-    });
-  }
-
-  React.useEffect(() => {
-    authListener();
-    return () => {};
-  }, []);
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer />
+        <BrowserRouter>
+          <ProminentAppBar />
+          <AppRouter />
+        </BrowserRouter>
       </PersistGate>
     </Provider>
   );

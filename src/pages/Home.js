@@ -1,39 +1,30 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Container from "@material-ui/core/Container";
 import firebase from "firebase/app";
 
-import { selectCart } from "./../redux/reducers/CartSlice";
-import { fetchCurrentUser } from "./../redux/reducers/AuthSlice";
 import useStyles from "./../css/style";
-import { fetchData, setAmounts } from "./../redux";
+import { fetchData, setAmounts, setUser } from "./../redux";
 import {
-  selectProducts,
   fetchPopularProducts,
   fetchRecentProducts,
   fetchTransactions,
-  fetchProducts,
 } from "./../redux/reducers/ProductSlice";
-import { fetchVendors } from "./../redux/reducers/VendorSlice";
-import { Header, Footer, SideBar, Products, Products2 } from "./../components";
+import { fetchMerchants } from "./../redux/reducers/MerchantSlice";
+import { Footer, Products } from "./../components";
 
 function Home() {
-  const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { products, selectedCategory, categories, mainList } =
-    useSelector(selectProducts);
   const db = firebase.firestore().collection("PRODUCTS");
-  const [data, setData] = React.useState({
-    products: [],
-  });
 
   React.useEffect(() => {
     dispatch(fetchRecentProducts());
-    dispatch(fetchProducts());
     dispatch(fetchTransactions());
     dispatch(fetchPopularProducts());
-    dispatch(fetchVendors());
+    dispatch(fetchMerchants());
+
+    //   console.log("UID: ", firebase.auth().currentUser.uid);
 
     const productsListener = db
       .where("isReserved" || "isSold", "!=", true)
@@ -61,7 +52,6 @@ function Home() {
           };
           return data;
         });
-        setData({ ...data, products: productList });
         dispatch(fetchData(productList));
       });
 
@@ -77,17 +67,36 @@ function Home() {
         dispatch(setAmounts(productList));
       });
 
+    /* const userListener = firebase
+      .firestore()
+      .collection("USERS")
+      .where("userID", "==", firebase.auth().currentUser.uid)
+      .onSnapshot((snapshot) => {
+        const user = snapshot.docs.map((doc) => {
+          const data = {
+            key: doc.data().userID,
+            displayName: doc.data().displayName,
+            email: doc.data().email,
+            avatar: doc.data().avatar,
+            phoneNumber: doc.data().phoneNumber,
+          };
+          return data;
+        });
+        dispatch(setUser(user));
+      }); */
+
     // Stop listening for updates whenever the component unmounts
     return () => {
       productsListener();
       productsAmounts();
+      // userListener();
     };
   }, []);
 
   return (
     <div>
-      <Container>
-        <Products2 />
+      <Container className={classes.container}>
+        <Products />
       </Container>
 
       <Footer />

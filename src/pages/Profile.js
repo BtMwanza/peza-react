@@ -6,13 +6,15 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 
+import Operations from "../components/functions/operations";
+import Fire from "./../lib/firebaseConfig";
 import useStyles from "./../css/style";
 import "./../css/App.css";
 import {
-  Header,
   Footer,
   UserDetails,
   UserOrders,
@@ -101,7 +103,14 @@ function Profile() {
         Item Six
       </TabPanel>
       <TabPanel value={value} index={6}>
-        Item Seven
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ background: "#00675b", marginBottom: 10 }}
+          onClick={() => Fire.shared.signOut()}
+        >
+          Logout
+        </Button>
       </TabPanel>
     </div>
   );

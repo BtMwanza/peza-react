@@ -24,20 +24,6 @@ import {
   FiUnlock,
   FiTrash2,
 } from "react-icons/fi";
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn,
-  MDBBtnGroup,
-  MDBBadge,
-  MDBCollapse,
-  MDBInput,
-} from "mdb-react-ui-kit";
 
 import { deleteItem, selectCart } from "./../redux/reducers/CartSlice";
 import useStyles from "./../css/style";
@@ -45,12 +31,13 @@ import "./../css/App.css";
 import Operations from "../components/functions/operations";
 import { fetchData } from "./../redux";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
-import { selectSellers } from "./../redux/reducers/VendorSlice";
+import { selectMerchants } from "./../redux/reducers/MerchantSlice";
 import FlutterwaveBtn from "./../lib/flutterwave";
 
-function Cart() {
+function Cart(props) {
+  const { history, name, location } = props;
   const cart = useSelector(selectCart);
-  const { vendors } = useSelector(selectSellers);
+  const { merchants } = useSelector(selectMerchants);
   const classes = useStyles();
   const dispatch = useDispatch();
   const { products, selectedCategory, categories, mainList } =
@@ -65,73 +52,82 @@ function Cart() {
   const toggleShow = () => setShowShow(!showShow);
 
   return (
-    <Grid container justifyContent="center" alignItems="center">
+    <Grid container>
       <Grid item xs={12} sm={9} md={9}>
-        <Paper className={classes.paper2}>
-          {cart.map((item, index) => {
-            const { productName, image, category, price } = item;
-            let vendor = Operations.shared.getVendorName(item, vendors);
-            return (
-              <Grid container>
-                <Grid item>
-                  <div className={classes.cartImage}>
-                    <img
-                      className={classes.cartImg}
-                      alt="complex"
-                      src={image}
-                    />
-                  </div>
-                </Grid>
-
-                <Grid item xs={12} sm container>
-                  <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs>
-                      <Typography gutterBottom variant="subtitle1">
-                        {productName}
-                      </Typography>
-                      <Typography variant="body2" gutterBottom>
-                        {category}
-                      </Typography>
-                      <Typography variant="subtitle2" color="textSecondary">
-                        Sold By: {vendor}
-                      </Typography>
-                    </Grid>
-                    <Grid item>
-                      <ButtonGroup
-                        variant="text"
-                        color="primary"
-                        aria-label="text primary button group"
-                      >
-                        <Button>
-                          <FiTrash2
-                            size={20}
-                            onClick={() => dispatch(deleteItem(item))}
-                          />
-                        </Button>
-                        {item.isReserved === undefined || false ? (
-                          <Button>
-                            <FiLock size={20} />
-                          </Button>
-                        ) : (
-                          <Button>
-                            <FiLock size={20} />
-                          </Button>
-                        )}
-                      </ButtonGroup>
-                    </Grid>
-                    <Divider style={{ marginBottom: 20 }} />
-                  </Grid>
-
+        {cart.length === 0 ? (
+          <Paper className={classes.paper2}>
+            <Typography className="text-center">
+              Your cart is empty, please add some items
+            </Typography>
+          </Paper>
+        ) : (
+          <Paper className={classes.paper2}>
+            {cart.map((item, index) => {
+              const { productName, image, category, price } = item;
+              let vendor = Operations.shared.getVendorName(item, merchants);
+              return (
+                <Grid container>
                   <Grid item>
-                    <Typography variant="subtitle1">
-                      K{price.toFixed(2)}
-                    </Typography>
+                    <div className={classes.cartImage}>
+                      <img
+                        className={classes.cartImg}
+                        alt="complex"
+                        src={image}
+                      />
+                    </div>
+                  </Grid>
+
+                  <Grid item xs={12} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
+                      <Grid item xs>
+                        <Typography gutterBottom variant="subtitle1">
+                          {productName}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                          {category}
+                        </Typography>
+                        <Typography variant="subtitle2" color="textSecondary">
+                          Sold By: {vendor}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <ButtonGroup
+                          variant="text"
+                          color="primary"
+                          aria-label="text primary button group"
+                        >
+                          <Button>
+                            <FiTrash2
+                              size={20}
+                              onClick={() => dispatch(deleteItem(index))}
+                            />
+                          </Button>
+                          {item.isReserved === undefined || false ? (
+                            <Button>
+                              <FiLock size={20} />
+                            </Button>
+                          ) : (
+                            <Button>
+                              <FiLock size={20} />
+                            </Button>
+                          )}
+                        </ButtonGroup>
+                      </Grid>
+                      <Divider style={{ marginBottom: 20 }} />
+                    </Grid>
+
+                    <Grid item>
+                      <Typography variant="subtitle1">
+                        K{price.toFixed(2)}
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            );
-          })}
-        </Paper>
+              );
+            })}
+          </Paper>
+        )}
+
         <Grid item xs={12} sm={9} md={9}>
           <Paper className={classes.paper2} elevation={0}>
             <p className="text-primary mb-0">
@@ -195,6 +191,7 @@ function Cart() {
               variant="contained"
               color="secondary"
               style={{ background: "#00675b", marginBottom: 10 }}
+              onClick={() => history.push("/auth")}
             >
               go to checkout
             </Button>

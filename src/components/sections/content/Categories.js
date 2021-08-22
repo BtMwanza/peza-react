@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 
-import { selectProducts } from "./../../redux/reducers/ProductSlice";
-import useStyles from "./../../css/style";
-import "./../../css/App.css";
-import { filterList } from "./../../redux";
-import ProductCategories from "./../../lib/categories.json";
+import { selectProducts } from "./../../../redux/reducers/ProductSlice";
+import useStyles from "./../../../css/style";
+import "./../../../css/App.css";
+import { filterList } from "./../../../redux";
+import ProductCategories from "./../../../lib/categories.json";
 
 function Categories() {
   const classes = useStyles();

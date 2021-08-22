@@ -3,8 +3,11 @@ import { MDBFooter, MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
 
 function Footer() {
   return (
-    <MDBFooter backgroundColor="light" className="text-center text-lg-left">
-      <MDBContainer className="p-4">
+    <MDBFooter
+      className="text-center text-lg-left"
+      style={{ backgroundColor: "#00675b" }}
+    >
+      <MDBContainer className="p-4 text-white">
         <MDBRow>
           <MDBCol lg="6" md="12" className="mb-4 mb-md-0">
             <h5 className="text-uppercase">PEZA</h5>
@@ -22,22 +25,22 @@ function Footer() {
 
             <ul className="list-unstyled mb-0">
               <li>
-                <a href="#!" className="text-dark">
-                  <i className="fi fi-facebook"></i>
+                <a href="#!" className="text-white">
+                  Link 1 <i className="fi fi-facebook"></i>
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 2
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 3
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 4
                 </a>
               </li>
@@ -49,22 +52,22 @@ function Footer() {
 
             <ul className="list-unstyled">
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 1
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 2
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 3
                 </a>
               </li>
               <li>
-                <a href="#!" className="text-dark">
+                <a href="#!" className="text-white">
                   Link 4
                 </a>
               </li>
@@ -74,11 +77,11 @@ function Footer() {
       </MDBContainer>
 
       <div
-        className="text-center p-3"
+        className="text-center p-3 text-white"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
         &copy; {new Date().getFullYear()}{" "}
-        <a className="text-dark" href="#">
+        <a className="text-white" href="#">
           Peza
         </a>
       </div>

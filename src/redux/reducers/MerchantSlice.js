@@ -1,26 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import firebase from "firebase/app";
+import Merchants from "./../../lib/merchants.json";
 
 // Inntial states
 const initialState = {
-  currentVendor: [],
-  vendors: [],
-  vendorID: "",
+  currentMerchant: [],
+  merchants: [],
+  merchantID: "",
+  selectedMerchant: "",
 };
 
 // Get vendor data
-export const fetchVendor = createAsyncThunk(
-  "prodSlice/fetchVendor",
-  async (vendorID) => {
-    const getVendor = firebase
+export const fetchMerchant = createAsyncThunk(
+  "prodSlice/fetchMerchant",
+  async (merchantID) => {
+    const getMerchant = firebase
       .firestore()
       .collection("VENDORS")
       .get()
       .then((querySnapshot) => {
         const data = [];
-        console.log("FETCHED_ID", vendorID);
+        console.log("FETCHED_ID", merchantID);
         querySnapshot.forEach((doc) => {
-          if (doc.id === vendorID) {
+          if (doc.id === merchantID) {
             data.push({
               key: doc.id,
               uid: doc.id,
@@ -36,16 +38,16 @@ export const fetchVendor = createAsyncThunk(
         });
         return data;
       });
-    const vendor = await getVendor;
-    return vendor;
+    const merchant = await getMerchant;
+    return merchant;
   }
 );
 
-// Get vendors
-export const fetchVendors = createAsyncThunk(
-  "prodSlice/fetchVendors",
+// Get merchants
+export const fetchMerchants = createAsyncThunk(
+  "prodSlice/fetchMerchants",
   async () => {
-    const getVendor = firebase
+    const getMerchants = firebase
       .firestore()
       .collection("VENDORS")
       .get()
@@ -64,36 +66,35 @@ export const fetchVendors = createAsyncThunk(
             location: doc.data().location,
           });
         });
-        console.log(data);
         return data;
       });
-    const vendors = await getVendor;
-    return vendors;
+    const merchants = await getMerchants;
+    return merchants;
   }
 );
 
-export const vendorSlice = createSlice({
-  name: "sellers",
+export const merchantSlice = createSlice({
+  name: "merchants",
   initialState,
   reducers: {
-    setVendorID: (state, action) => {
-      state.vendorID = action.payload;
+    setMerchantID: (state, action) => {
+      state.merchantID = action.payload;
     },
   },
   extraReducers: {
-    [fetchVendor.fulfilled]: (state, action) => {
-      state.currentVendor = action.payload;
-      console.log("VENDOR: ", action.payload);
+    [fetchMerchant.fulfilled]: (state, action) => {
+      state.currentMerchant = action.payload;
+      console.log("MERCHANT: ", action.payload);
     },
-    [fetchVendors.fulfilled]: (state, action) => {
-      state.vendors = action.payload;
+    [fetchMerchants.fulfilled]: (state, action) => {
+      state.merchants = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setVendorID } = vendorSlice.actions;
+export const { setMerchantID } = merchantSlice.actions;
 
-export const selectSellers = (state) => state.sellers;
+export const selectMerchants = (state) => state.merchants;
 
-export default vendorSlice.reducer;
+export default merchantSlice.reducer;

@@ -1,87 +1,54 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiLock, FiUnlock, FiShoppingBag, FiCreditCard } from "react-icons/fi";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { Link } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import firebase from "firebase/app";
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn,
-  MDBBtnGroup,
-  MDBIcon,
-  MDBCollapse,
-  MDBNavbarToggler,
-  MDBNavbar,
-  MDBRange,
-  MDBCheckbox,
-} from "mdb-react-ui-kit";
 
-import { deleteItem, selectCart } from "./../redux/reducers/CartSlice";
-import { fetchCurrentUser } from "./../redux/reducers/AuthSlice";
+import { selectCart } from "./../redux/reducers/CartSlice";
 import useStyles from "./../css/style";
 import "./../css/App.css";
 import Operations from "../components/functions/operations";
-import {
-  filterList,
-  searchList,
-  fetchData,
-  setVendorID,
-  setCurrentProduct,
-} from "./../redux";
+import { filterList, searchList, setCurrentProduct } from "./../redux";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
-import { selectSellers } from "./../redux/reducers/VendorSlice";
-import { Header, Footer, SideBar, Products } from "./../components";
+import { selectMerchants } from "./../redux/reducers/MerchantSlice";
+import { Footer, Pagination } from "./../components";
 
 function ReservedProduct() {
   const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { products, selectedCategory, categories, mainList, searchText } =
-    useSelector(selectProducts);
+  const { products, reservedProducts } = useSelector(selectProducts);
   const db = firebase.firestore().collection("PRODUCTS");
   const reserveDB = firebase.firestore().collection("RESERVED");
-  const [showBasic, setShowBasic] = React.useState(false);
   var count = 0;
   const event = new Date();
+  const [progress, setProgress] = React.useState(0);
   const [text, setText] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [productPerPage] = React.useState(15);
+  const indexOfLastProduct = currentPage * productPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const breakpointColumnsObj = {
-    default: 6,
+    default: 5,
     1100: 3,
     700: 2,
     500: 2,
   };
-
-  const reserveProduct = (item) => {
-    db.doc(item.productID).set({ isReserved: true }, { merge: true });
-    reserveDB.doc(item.productID).set({
-      productID: item.productID,
-      image: item.image,
-      price: item.price,
-      productName: item.productName,
-      isReserved: true,
-      startDate: Date.now(),
-      expiryDate: event.setHours(72),
-    });
-  };
+  const startDate = Date.now();
+  const expiryDate = event.setHours(72);
 
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
@@ -93,101 +60,125 @@ function ReservedProduct() {
     }
   };
 
+  function countDown(params) {
+    setProgress(() => {
+      const second = 1000;
+      const minute = second * 60;
+      const hour = minute * 60;
+      const day = hour * 24;
+      const diff = expiryDate - startDate;
+      console.log("START DATE: ", startDate);
+      console.log("END DATE: ", expiryDate);
+      console.log("Diff: ", diff);
+      console.log("Days: ", Math.floor(diff / day));
+      console.log("Hours: ", Math.floor((diff % day) / hour));
+      console.log("Minutes: ", Math.floor((diff % hour) / minute));
+      console.log("Seconds: ", (diff % minute) / second);
+      return Math.floor((diff % hour) / minute);
+    });
+  }
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress(() => {
+        const second = 1000;
+        const minute = second * 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+        const diff = expiryDate - startDate;
+
+        console.log("START DATE: ", startDate);
+        console.log("END DATE: ", expiryDate);
+        console.log("Diff: ", diff);
+        console.log("Days: ", Math.floor(diff / day));
+        console.log("Hours: ", Math.floor((diff % day) / hour));
+        console.log("Minutes: ", Math.floor((diff % hour) / minute));
+        console.log("Seconds: ", Math.floor((diff % minute) / second));
+        return Math.floor((diff % minute) / second);
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   return (
     <main>
-      <Container className="container">
-        <MDBRow>
-          <section className="col-lg-12">
-            <div
-              className="row wow fadeIn"
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              <Masonry
-                breakpointCols={breakpointColumnsObj}
-                className="my-masonry-grid"
-                columnClassName="my-masonry-grid_column"
-              >
-                {products.map((item) => (
-                  <Card>
-                    <h6 className="text-center">{item.productName}</h6>
-                    <hr />
+      <Container className={classes.container}>
+        <Grid item xs={12}>
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="my-masonry-grid"
+            columnClassName="my-masonry-grid_column"
+          >
+            {currentProducts.map((item) => {
+              const { productID, productName, image, price } = item;
+              return (
+                <Card key={productID} className="shadow hover-zoom">
+                  <Grid
+                    item
+                    xs
+                    direction="column"
+                    style={{
+                      backgroundColor: "#d1f2eb",
+                      minHeight: 110,
+                    }}
+                  >
                     <div className={classes.img_box}>
-                      <img className={classes.img} src={item.image} />
+                      <img className={classes.img} src={image} />
                     </div>
                     <hr style={{ color: "transparent" }} />
-                    <h6 className="text-center">K{item.price.toFixed(2)}</h6>
-                    <CardActions
-                      style={{ alignItems: "center", justifyContent: "center" }}
+                  </Grid>
+                  <Grid>
+                    <Typography
+                      variant="subtitle2"
+                      className="text-center title"
+                      gutterBottom
                     >
-                      <IconButton>
-                        <FiUnlock color="#00675b" size={20} />
-                      </IconButton>
-                      <IconButton>
-                        <FiCreditCard color="#00675b" size={20} />
-                      </IconButton>
-                      <IconButton>
-                        <FiShoppingBag color="#00675b" size={20} />
-                      </IconButton>
-                    </CardActions>
-                  </Card>
-                ))}
-              </Masonry>
-            </div>
-          </section>
-        </MDBRow>
+                      {productName}
+                    </Typography>
 
-        {/* <!--Pagination--> */}
-        <nav className="d-flex justify-content-center wow fadeIn">
-          <ul className="pagination pg-blue">
-            {/* <!--Arrow left--> */}
-            <li className="page-item disabled">
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span className="sr-only">Previous</span>
-              </a>
-            </li>
+                    <Typography variant="subtitle1" className="text-center">
+                      K{price.toFixed(2)}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs>
+                    <LinearProgress variant="determinate" value={progress} />
+                  </Grid>
 
-            <li className="page-item active">
-              <a className="page-link" href="#">
-                1<span className="sr-only">(current)</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                4
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                5
-              </a>
-            </li>
+                  <CardActions
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <IconButton>
+                      <FiUnlock color="#00675b" size={20} />
+                    </IconButton>
+                    <IconButton>
+                      <FiCreditCard color="#00675b" size={20} />
+                    </IconButton>
+                    <IconButton>
+                      <FiShoppingBag color="#00675b" size={20} />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              );
+            })}
+          </Masonry>
+        </Grid>
 
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span className="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-        {/* <!--Pagination--> */}
+        <Grid item xs={12}>
+          <Pagination
+            productsPerPage={productPerPage}
+            totalProducts={products.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        </Grid>
       </Container>
+      <Footer />
     </main>
   );
 }

@@ -6,6 +6,10 @@ export {
   setCurrentTransaction,
   setAmounts,
   setSimilarProducts,
+  filterMerchants,
+  filterMake,
+  filterModel,
+  filterPrice,
 } from "./reducers/ProductSlice";
 export {
   addItem,
@@ -22,4 +26,4 @@ export {
   changeProfile,
   setUser,
 } from "./reducers/AuthSlice";
-export { setVendorID } from "./reducers/VendorSlice";
+export { setMerchantID } from "./reducers/MerchantSlice";

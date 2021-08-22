@@ -1,49 +1,32 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import firebase from "firebase/app";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
 import { FiShoppingBag, FiLock, FiUnlock } from "react-icons/fi";
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
-  MDBCardImage,
-  MDBBtn,
-  MDBBtnGroup,
-  MDBBadge,
-} from "mdb-react-ui-kit";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import moment from "moment";
 
 import { selectCart } from "./../redux/reducers/CartSlice";
-import { fetchVendor } from "./../redux/reducers/VendorSlice";
-import { fetchCurrentUser } from "./../redux/reducers/AuthSlice";
+import { fetchMerchant } from "./../redux/reducers/MerchantSlice";
+import { fetchCurrentUser, selectAuth } from "./../redux/reducers/AuthSlice";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
 import Operations from "./../components/functions/operations";
 import useStyles from "./../css/style";
 import {
   addItem,
   deleteItem,
-  setVendorID,
+  setMerchantID,
   setCurrentProduct,
 } from "./../redux";
-import { Header, Footer, SideBar, Products } from "./../components";
+import { Footer, Products, Reviews } from "./../components";
 
 function ProductDetails() {
   const { productId } = useParams();
@@ -51,6 +34,7 @@ function ProductDetails() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { currentProduct, products } = useSelector(selectProducts);
+  const { currentUser } = useSelector(selectAuth);
   const [reserved, setReserved] = React.useState(false);
   const [reviews, setReviews] = React.useState([]);
   const [review, setReview] = React.useState("");
@@ -88,146 +72,282 @@ function ProductDetails() {
     }
   }
 
+  // store review in Firestore
+  const handleSend = async (review) => {
+    const text = review;
+    var now = moment(new Date().getTime()).format("lll");
+    try {
+      reviewRef.collection("REVIEWS").add({
+        text,
+        createdAt: now,
+        user: {
+          _id: reviewer.uid,
+          email: reviewer.email,
+          avatar: reviewer.photoURL,
+          displayName: reviewer.displayName,
+        },
+      });
+
+      await reviewRef.set(
+        {
+          latestReviews: {
+            text,
+            createdAt: moment(new Date().getTime()).format("lll"),
+            name: currentProduct.productName,
+            productID: screenID,
+            reviewer_id: reviewer.uid,
+            reviewer_name: reviewer.displayName,
+            reviewer_avatar: reviewer.photoURL,
+          },
+        },
+        { merge: true }
+      );
+      setReview("");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  // Get reviews
+  React.useEffect(() => {
+    const reviewsListener = reviewRef
+      .collection("REVIEWS")
+      .orderBy("createdAt", "desc")
+      .onSnapshot((querySnapshot) => {
+        const reviews = querySnapshot.docs.map((doc) => {
+          const firebaseData = doc.data();
+
+          const data = {
+            _id: doc.id,
+            text: "",
+            createdAt: moment(new Date().getTime()).format("lll"),
+            ...firebaseData,
+          };
+
+          if (!firebaseData.system) {
+            data.user = {
+              ...firebaseData.user,
+              _id: firebaseData.user._id,
+              displayName: firebaseData.user.displayName,
+              avatar: firebaseData.user.photoURL,
+            };
+          }
+          return data;
+        });
+        console.log("REVIEWS: ", reviews);
+        setReviews(reviews);
+      });
+
+    // Stop listening for updates whenever the component unmounts
+    return () => reviewsListener();
+  }, []);
+
   return (
-    <Container>
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={12}>
-          <Paper className={classes.paper2}>
-            <Typography variant="h5" className="d-flex justify-content-center">
-              {currentProduct.productName}
-            </Typography>
-          </Paper>
-        </Grid>
-
-        <Grid container item xs spacing={2}>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            md={6}
-            direction="column"
-            style={{
-              backgroundColor: "#d1f2eb",
-            }}
-          >
-            <div className={classes.detailsImage}>
-              <img
-                className={classes.detailsImgFit}
-                alt={currentProduct.productName}
-                src={currentProduct.image}
-              />
-            </div>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={6}>
-            <Grid item>
-              <Chip
-                label={currentProduct.category}
-                size="small"
-                color="secondary"
-              />
-              <Chip label="View vendor" size="small" color="secondary" />
-            </Grid>
-            <Typography variant="subtitle2" gutterBottom>
-              {currentProduct.oldPrice !== undefined ? (
-                <span className="mr-1">
-                  <del>$200</del>
-                </span>
-              ) : (
-                <span className="mr-1"></span>
-              )}
-            </Typography>
-            <Typography variant="subtitle2">K{currentProduct.price}</Typography>
-            <Typography>Description</Typography>
-            <Typography gutterBottom>{currentProduct.desc}</Typography>
-
-            <Grid className="d-flex justify-content-between">
-              <ButtonGroup
-                variant="text"
-                color="primary"
-                aria-label="text primary button group"
+    <section>
+      <Container>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item xs={12}>
+            <Paper className={classes.paper2} elevation={0}>
+              <Typography
+                variant="h5"
+                className="d-flex justify-content-center"
               >
-                <Button>
-                  <FiShoppingBag
-                    size={20}
-                    onClick={() => {
-                      Operations.shared.toggleCart(
-                        currentProduct,
-                        cart,
-                        dispatch
-                      );
-                    }}
-                  />
-                </Button>
+                {currentProduct.productName}
+              </Typography>
+            </Paper>
+          </Grid>
 
-                <Button
-                  onClick={() =>
-                    Operations.shared.reserveProduct(currentProduct, reserved)
-                  }
+          <Grid container item xs spacing={2}>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              direction="column"
+              style={{
+                backgroundColor: "#d1f2eb",
+              }}
+            >
+              <div className={classes.detailsImage}>
+                <img
+                  className={classes.detailsImgFit}
+                  alt={currentProduct.productName}
+                  src={currentProduct.image}
+                />
+              </div>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6}>
+              <Grid item xs={12}>
+                <Chip
+                  label={currentProduct.category}
+                  size="small"
+                  color="primary"
+                  style={{ marginRight: 2 }}
+                />
+                {currentProduct !== undefined ? (
+                  <span></span>
+                ) : (
+                  <Chip
+                    label={currentProduct.make}
+                    size="small"
+                    color="secondary"
+                    style={{ marginRight: 2 }}
+                  />
+                )}
+                {currentProduct !== undefined ? (
+                  <span></span>
+                ) : (
+                  <Chip
+                    label={currentProduct.model}
+                    size="small"
+                    color="secondary"
+                    style={{ marginRight: 2 }}
+                  />
+                )}
+
+                <Chip
+                  label="View vendor"
+                  size="small"
+                  color="secondary"
+                  style={{ marginRight: 2 }}
+                />
+              </Grid>
+              <Typography variant="subtitle2" gutterBottom>
+                {currentProduct.oldPrice !== undefined ? (
+                  <span className="mr-1">
+                    <del>$200</del>
+                  </span>
+                ) : (
+                  <span className="mr-1"></span>
+                )}
+              </Typography>
+              <Typography variant="subtitle2">
+                K{currentProduct.price}
+              </Typography>
+              <Typography>Description</Typography>
+              <Typography gutterBottom>{currentProduct.desc}</Typography>
+
+              <Grid className="d-flex justify-content-between">
+                <ButtonGroup
+                  variant="text"
+                  color="primary"
+                  aria-label="text primary button group"
                 >
-                  {currentProduct.isReserved === undefined || false ? (
-                    <FiLock size={20} />
-                  ) : (
-                    <FiLock size={20} />
-                  )}
-                </Button>
-              </ButtonGroup>
+                  <Button>
+                    <FiShoppingBag
+                      size={20}
+                      onClick={() => {
+                        Operations.shared.toggleCart(
+                          currentProduct,
+                          cart,
+                          dispatch
+                        );
+                      }}
+                    />
+                  </Button>
+
+                  <Button
+                    disabled={currentUser === [] ? false : true}
+                    onClick={() =>
+                      Operations.shared.reserveProduct(currentProduct, reserved)
+                    }
+                  >
+                    {currentProduct.isReserved === undefined || false ? (
+                      <FiLock size={20} />
+                    ) : (
+                      <FiLock size={20} />
+                    )}
+                  </Button>
+                </ButtonGroup>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <hr />
-      <Grid item xs={12} className="text-center">
-        <Typography variant="h6" className="my-4 h3">
-          Additional information{" "}
-        </Typography>
-        <Typography variant="body5"> {currentProduct.extraInfo}</Typography>
-      </Grid>
-      <main>
-        <MDBRow className="row d-flex justify-content-center wow fadeIn">
-          <MDBCol>
-            <h4></h4>
-            <p></p>
-          </MDBCol>
-        </MDBRow>
         <hr />
-        <MDBRow>
-          <h4 className="d-flex my-4 h4 text-center">Similar Products</h4>
-          {products.map((item, index) => {
-            return (
-              <MDBCol className="col-lg-2 col-md-3 col-sm-2 col-xs-2 mb-3">
-                <MDBCard
-                  className="card shadow hover-zoom"
-                  style={{ maxWidth: "160px", backgroundColor: "#e9f7ef" }}
-                  onClick={() => dispatch(setCurrentProduct(item))}
-                >
-                  <Link to={`/product/${item.productID}`}>
-                    <div className={classes.image2}>
-                      <img
-                        className={classes.imgFit}
-                        alt="complex"
-                        src={item.image}
-                      />
-                    </div>
-                  </Link>
+        <Grid item xs={12} className="text-center">
+          <Typography variant="h6" className="my-4 h3">
+            Additional information
+          </Typography>
+          <Typography variant="body5"> {currentProduct.extraInfo}</Typography>
+        </Grid>
 
-                  <MDBCardBody>
-                    <h5 className="title">{item.productName}</h5>
-                    <div className="bottom-details">
-                      <h6 className="product-price">
-                        <strong>K{item.price}</strong>
-                      </h6>
-                    </div>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
-            );
-          })}
-        </MDBRow>
+        <hr />
 
         {/* REVIEWS */}
-      </main>
-    </Container>
+        <Grid container item xs={12}>
+          <Grid xs={12} className="text-center">
+            <Typography variant="h6" className="my-4 h3">
+              Reviews
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} style={{ marginBottom: 30 }}>
+            {currentUser !== [] ? (
+              <div></div>
+            ) : (
+              <Formik
+                initialValues={{ review: "" }}
+                onSubmit={(values, { setSubmitting }) => {
+                  setTimeout(() => {
+                    handleSend(values.review);
+                    setSubmitting(false);
+                  }, 400);
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form>
+                    <div class="form mb-3">
+                      <TextField
+                        label="Add your review here..."
+                        fullWidth
+                        multiline
+                        maxRows={5}
+                        type="text"
+                        name="review"
+                        helperText={
+                          errors.review && touched.review && errors.review
+                        }
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.review}
+                      />
+                    </div>
+
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      disabled={
+                        values.review === "" ? !isSubmitting : isSubmitting
+                      }
+                      onClick={() => {
+                        handleSend(values.review);
+                      }}
+                      style={{ background: "#00675b", marginBottom: 10 }}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            )}
+          </Grid>
+
+          <Grid xs={12} style={{ marginLeft: 10, marginRight: 10 }}>
+            <Reviews reviews={reviews} />
+          </Grid>
+        </Grid>
+      </Container>
+      <Footer />
+    </section>
   );
 }
 

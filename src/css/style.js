@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     marginTop: 20,
+    marginBottom: 20,
   },
   // Prominent navbar
   grow: {
@@ -32,23 +33,25 @@ const useStyles = makeStyles((theme) => ({
     },
     flexDirection: "row",
   },
+
+  // Search Input
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.black, 0.05),
     "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.black, 0.15),
     },
-    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
+      marginLeft: theme.spacing(0),
       width: "auto",
     },
+    marginBottom: theme.spacing(2),
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 1),
     height: "100%",
     position: "absolute",
     pointerEvents: "none",
@@ -57,7 +60,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   inputRoot: {
-    color: "inherit",
+    color: "#00675b",
+    borderWidth: 2,
+    borderColor: "#00675b",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -65,10 +70,15 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
+
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
     },
   },
+
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -103,12 +113,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 
+  // Reaserved Products Image
   img_box: {
     height: "100%",
     width: "100%",
     objectFit: "contain",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: theme.spacing(2),
   },
   img: {
     margin: "auto",
@@ -116,8 +126,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "50%",
     maxHeight: "50%",
     objectFit: "cover",
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   img_details: {
@@ -190,8 +198,8 @@ const useStyles = makeStyles((theme) => ({
   detailsImgFit: {
     margin: "auto",
     display: "block",
-    maxWidth: "250%",
-    maxHeight: "250%",
+    maxWidth: "90%",
+    maxHeight: "90%",
     //objectFit: "contain",
   },
   detailsGrid: {
@@ -241,6 +249,31 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
+    width: 200,
+  },
+
+  smallAvatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
+
+  // Reviews
+  reviewsRoot: {
+    height: "100%",
+    position: "relative",
+  },
+  reviewsCard: {
+    zIndex: 1,
+    position: "relative",
+    borderRadius: "1rem",
+    boxShadow: "0 6px 20px 0 #dbdbe8",
+    backgroundColor: "#fff",
+    height: "100%",
+  },
+  logo: {
+    width: 48,
+    height: 48,
+    borderRadius: "0.75rem",
   },
 }));
 

@@ -15,16 +15,16 @@ import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
 import Carousel from "react-material-ui-carousel";
 
-import useStyles from "./../../css/style";
-import "./../../css/App.css";
-import HEADER1 from "./../../assets/img/julian-hochgesang-1PsOu8gyZIQ-unsplash.jpg";
-import HEADER2 from "./../../assets/img/ciel-cheng-LzCjv1fsCk8-unsplash.jpg";
-import HEADER3 from "./../../assets/img/kool-c-GUkCocksjK8-unsplash.jpg";
-import HEADER4 from "./../../assets/img/robert-laursoo-WHPOFFzY9gU-unsplash.jpg";
-import HEADER5 from "./../../assets/img/arteum-ro-KiTalJFRkcg-unsplash.jpg";
-import HEADER6 from "./../../assets/img/sergio-rota-WpacMzph6vQ-unsplash.jpg";
-import HEADER7 from "./../../assets/img/wade-lambert-1JMDhJB3F3Y-unsplash.jpg";
-import HEADER8 from "./../../assets/img/joshua-naidoo-oNnl9IYzbug-unsplash.jpg";
+import useStyles from "./../../../css/style";
+import "./../../../css/App.css";
+import HEADER1 from "./../../../assets/img/julian-hochgesang-1PsOu8gyZIQ-unsplash.jpg";
+import HEADER2 from "./../../../assets/img/ciel-cheng-LzCjv1fsCk8-unsplash.jpg";
+import HEADER3 from "./../../../assets/img/kool-c-GUkCocksjK8-unsplash.jpg";
+import HEADER4 from "./../../../assets/img/robert-laursoo-WHPOFFzY9gU-unsplash.jpg";
+import HEADER5 from "./../../../assets/img/arteum-ro-KiTalJFRkcg-unsplash.jpg";
+import HEADER6 from "./../../../assets/img/sergio-rota-WpacMzph6vQ-unsplash.jpg";
+import HEADER7 from "./../../../assets/img/wade-lambert-1JMDhJB3F3Y-unsplash.jpg";
+import HEADER8 from "./../../../assets/img/joshua-naidoo-oNnl9IYzbug-unsplash.jpg";
 
 function Header() {
   const classes = useStyles();

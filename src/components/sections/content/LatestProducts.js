@@ -6,16 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import Chip from "@material-ui/core/Chip";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import firebase from "firebase/app";
 
-import { selectCart } from "./../../../redux/reducers/CartSlice";
 import { selectProducts } from "./../../../redux/reducers/ProductSlice";
 import useStyles from "./../../../css/style";
 import "./../../../css/App.css";
-import { setCurrentProduct, setSimilarProducts } from "./../../../redux";
+import { setCurrentProduct } from "./../../../redux";
 
 function LatestProducts() {
-  const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
   const { recentProducts } = useSelector(selectProducts);
@@ -40,10 +37,13 @@ function LatestProducts() {
         </Grid>
 
         {recentProducts.map((item, index) => {
-          const { image, productName, price, category, year } = item;
+          const { image, productName, price, category, year, productID } = item;
           return (
             <Grid item xs={12} md={3} sm={12} lg={3}>
-              <Paper className="card-background shadow hover-zoom">
+              <Paper
+                key={productID}
+                className="card-background shadow hover-zoom"
+              >
                 <Grid
                   item
                   xs
@@ -53,9 +53,19 @@ function LatestProducts() {
                     minHeight: 210,
                   }}
                 >
-                  <div className={classes.image2}>
-                    <img className={classes.imgFit} alt="complex" src={image} />
-                  </div>
+                  <Link to={`/product/${productID}`}>
+                    <div
+                      className={classes.image2}
+                      onClick={() => dispatch(setCurrentProduct(item))}
+                    >
+                      <img
+                        className={classes.imgFit}
+                        alt="complex"
+                        src={image}
+                      />
+                    </div>
+                  </Link>
+
                   {year !== "" ? (
                     <Chip label={year} size="small" color="secondary" />
                   ) : (

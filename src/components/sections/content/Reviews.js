@@ -1,15 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import GoogleFontLoader from "react-google-font-loader";
+import NoSsr from "@material-ui/core/NoSsr";
 import Avatar from "@material-ui/core/Avatar";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import { Column, Row, Item } from "@mui-treasury/components/flex";
+import { Row } from "@mui-treasury/components/flex";
 import { Info, InfoSubtitle, InfoTitle } from "@mui-treasury/components/info";
 import { useApexInfoStyles } from "@mui-treasury/styles/info/apex";
-import { useGraphicBtnStyles } from "@mui-treasury/styles/button/graphic";
 import { Typography } from "@material-ui/core";
 import moment from "moment";
 import Masonry from "react-masonry-css";
@@ -58,9 +57,9 @@ const Reviews = React.memo(function TeamCard({ reviews }) {
   };
   return (
     <>
-      {/* <NoSsr>
+      <NoSsr>
         <GoogleFontLoader fonts={[{ font: "Ubuntu", weights: [400, 700] }]} />
-      </NoSsr> */}
+      </NoSsr>
       <Grid
         container
         spacing={4}
@@ -76,9 +75,8 @@ const Reviews = React.memo(function TeamCard({ reviews }) {
           {reviews.map((item) => {
             const { user, createdAt, text, _id } = item;
             return (
-              <Grid item>
+              <Grid item key={_id}>
                 <CustomCard
-                  key={_id}
                   thumbnail={user.avatar}
                   title={
                     user.displayName === undefined

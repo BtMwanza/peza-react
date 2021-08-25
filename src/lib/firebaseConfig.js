@@ -22,9 +22,10 @@ class Fire {
     }
   };
 
-  subscribeToAuthChanges(authStateChanged) {
+  subscribeToAuthChanges() {
     firebase.auth().onAuthStateChanged((user) => {
-      authStateChanged(user);
+      console.log("AUTH STATE: ", user);
+      return user;
     });
   }
 

@@ -275,6 +275,9 @@ const useStyles = makeStyles((theme) => ({
     height: 48,
     borderRadius: "0.75rem",
   },
+  checkoutLeft: {
+    backgroundColor: "#d1f2eb",
+  },
 }));
 
 export default useStyles;

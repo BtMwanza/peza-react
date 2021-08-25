@@ -43,13 +43,15 @@ function Explore() {
           <Categories />
         </Grid>
 
+        {/* Sidebar grid */}
         <Grid item xs={12} md={3} sm={6}>
           <Paper>
             <SideBar />
           </Paper>
         </Grid>
 
-        <Grid container item xs={12} sm={9} md={9} spacing={3}>
+        {/* Products grid */}
+        <Grid container item xs={12} md={9} spacing={0}>
           {currentProducts.map((item) => {
             const { image, productName, price, category, year, productID } =
               item;

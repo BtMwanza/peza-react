@@ -14,15 +14,15 @@ const reserveDB = firebase.firestore().collection("RESERVED");
 const event = new Date();
 
 class Operations {
-  toggleCart = (item, index, cart, dispatch) => {
+  toggleCart = (currentProduct, cart, dispatch) => {
     try {
-      const added = cart.find((p) => p.productID === item.productID);
+      const added = cart.find((p) => p.productID === currentProduct.productID);
       if (!added) {
-        dispatch(addItem(item));
-        console.log("ADDED: ", item);
+        dispatch(addItem(currentProduct));
+        console.log("ADDED: ", cart);
       } else {
-        dispatch(deleteItem(item.productID));
-        console.log("DELETED: ", item);
+        dispatch(deleteItem({ id: currentProduct.productID }));
+        console.log("DELETED: ", currentProduct.productID);
       }
     } catch (error) {
       console.log(error);

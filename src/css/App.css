@@ -129,6 +129,7 @@
   border-radius: 5px;
   height: 320px;
   min-width: 160px;
+  margin: 0px 10px 10px 10px;
 }
 
 .MuiDrawer-paper {
@@ -143,4 +144,9 @@
   flex-direction: column;
   background-color: #00675b !important;
   -webkit-overflow-scrolling: touch;
+}
+
+.checkout-left {
+  background-color: #fffff0;
+  padding: 0px 10px 0px 10px;
 }

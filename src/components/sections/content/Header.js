@@ -1,18 +1,7 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Masonry from "react-masonry-css";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Chip from "@material-ui/core/Chip";
 import Carousel from "react-material-ui-carousel";
 
 import useStyles from "./../../../css/style";
@@ -116,7 +105,7 @@ function Header() {
 
       <Grid container item xs md={3} sm={12}>
         <Grid item xs={12}>
-          <Carousel indicators={false} animation="fade" autoPlay={true}>
+          <Carousel indicators={false} animation="slide" autoPlay={true}>
             {items.map((item, i) => {
               const { image, name, description } = item;
               return (
@@ -149,7 +138,7 @@ function Header() {
           </Carousel>
         </Grid>
         <Grid item xs={12}>
-          <Carousel indicators={false} animation="fade" autoPlay={true}>
+          <Carousel indicators={false} animation="slide" autoPlay={true}>
             {items.map((item, i) => {
               const { image, name, description } = item;
               return (

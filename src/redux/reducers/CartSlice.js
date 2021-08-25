@@ -1,39 +1,48 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 export const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: {
     cart: [],
     payload: {
-      authorization: 'FLWPUBK_TEST-9fddec269d7457e63b952c7943e970a6-X',
-      tx_ref: '',
-      amount: '',
-      currency: '',
-      payment_options: '',
+      authorization: "FLWPUBK_TEST-9fddec269d7457e63b952c7943e970a6-X",
+      tx_ref: "",
+      amount: "",
+      currency: "",
+      payment_options: "",
       customer: {
-        email: '',
-        phoneNumber: '',
-        name: '',
+        email: "",
+        phoneNumber: "",
+        name: "",
       },
     },
     total: 0,
   },
   reducers: {
     addItem: (state, action) => {
+      // Go through the cart and find the product ID that matches the incoming product ID
       const added = state.cart.find(
-        ({productID}) => productID === action.payload.productID,
+        ({ productID }) => productID === action.payload.productID
       );
       if (!added) {
         state.cart.push(action.payload);
       } else {
         added.currentQuantity++;
       }
+      console.log("ACTION: ", action.payload.productID);
     },
     deleteItem: (state, action) => {
-      let cart = state.cart;
-      cart.splice(action.payload, 1);
+      //  console.log("DELETE_ACTION: ", action.payload.id);
+      const added = state.cart.find(
+        ({ productID }) => productID === action.payload.id
+      );
+      console.log("IS_IT_THERE: ", added);
+      if (added) {
+        let cart = state.cart;
+        cart.splice(action.payload.id, 1);
 
-      cart = state.cart;
+        cart = state.cart;
+      }
     },
     increaseQuantity: (state, action) => {
       let idx = action.payload;
@@ -60,7 +69,7 @@ export const cartSlice = createSlice({
     },
     addToPayload: (state, action) => {
       state.payload = action.payload;
-      console.log('PAYLOAD: ', state.payload);
+      console.log("PAYLOAD: ", state.payload);
     },
   },
 });
@@ -75,7 +84,7 @@ export const {
   addToPayload,
 } = cartSlice.actions;
 
-export const selectCart = state => state.cart.cart;
-export const selectTotal = state => state.cart.total;
+export const selectCart = (state) => state.cart.cart;
+export const selectTotal = (state) => state.cart.total;
 
 export default cartSlice.reducer;

@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import firebase from "firebase/app";
+import GoogleFontLoader from "react-google-font-loader";
+import NoSsr from "@material-ui/core/NoSsr";
 import { useDispatch, useSelector } from "react-redux";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -144,6 +146,9 @@ function ProductDetails() {
 
   return (
     <section>
+      <NoSsr>
+        <GoogleFontLoader fonts={[{ font: "Raleway", weights: [200, 700] }]} />
+      </NoSsr>
       <Container>
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs={12}>
@@ -207,7 +212,7 @@ function ProductDetails() {
                 )}
 
                 <Chip
-                  label="View vendor"
+                  label="View seller"
                   size="small"
                   color="secondary"
                   style={{ marginRight: 2 }}
@@ -225,51 +230,96 @@ function ProductDetails() {
               <Typography variant="subtitle2">
                 K{currentProduct.price}
               </Typography>
-              <Typography>Description</Typography>
+              <Typography style={{ fontFamily: "Raleway", fontWeight: "bold" }}>
+                Description
+              </Typography>
               <Typography gutterBottom>{currentProduct.desc}</Typography>
 
-              <Grid className="d-flex justify-content-between">
+              <Grid item xs={12}>
+                <Typography
+                  variant="subtitle1"
+                  className="my-1"
+                  style={{ fontFamily: "Raleway", fontWeight: "bold" }}
+                >
+                  Additional information
+                </Typography>
+                <Typography gutterBottom>{currentProduct.extraInfo}</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                {currentProduct.make === "" ? (
+                  <span></span>
+                ) : (
+                  <Chip
+                    label={currentProduct.make}
+                    size="small"
+                    color="secondary"
+                    style={{ marginRight: 2 }}
+                  />
+                )}
+                {currentProduct.model === "" ? (
+                  <span></span>
+                ) : (
+                  <Chip
+                    label={currentProduct.model}
+                    size="small"
+                    color="secondary"
+                    style={{ marginRight: 2 }}
+                  />
+                )}
+              </Grid>
+              <hr />
+
+              <Grid item className="d-flex justify-content-between">
                 <ButtonGroup
                   variant="text"
                   color="primary"
                   aria-label="text primary button group"
                 >
-                  <Button>
-                    <FiShoppingBag
-                      size={20}
-                      onClick={() => {
-                        Operations.shared.toggleCart(
-                          currentProduct,
-                          cart,
-                          dispatch
-                        );
-                      }}
-                    />
+                  <Button
+                    onClick={() => {
+                      Operations.shared.toggleCart(
+                        currentProduct,
+                        cart,
+                        dispatch
+                      );
+                    }}
+                  >
+                    Add to cart
+                    <FiShoppingBag size={20} />
                   </Button>
 
-                  <Button
-                    disabled={currentUser === [] ? false : true}
-                    onClick={() =>
-                      Operations.shared.reserveProduct(currentProduct, reserved)
-                    }
-                  >
-                    {currentProduct.isReserved === undefined || false ? (
+                  {currentProduct.isReserved !== undefined || false ? (
+                    <Button
+                      disabled={currentUser === [] ? false : true}
+                      onClick={() =>
+                        Operations.shared.reserveProduct(
+                          currentProduct,
+                          reserved
+                        )
+                      }
+                    >
+                      Reserve item
+                      <FiUnlock size={20} />
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={currentUser === [] ? false : true}
+                      onClick={() =>
+                        Operations.shared.reserveProduct(
+                          currentProduct,
+                          reserved
+                        )
+                      }
+                    >
+                      Unreserve item
                       <FiLock size={20} />
-                    ) : (
-                      <FiLock size={20} />
-                    )}
-                  </Button>
+                    </Button>
+                  )}
                 </ButtonGroup>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <hr />
-        <Grid item xs={12} className="text-center">
-          <Typography variant="h6" className="my-4 h3">
-            Additional information
-          </Typography>
-          <Typography variant="body5"> {currentProduct.extraInfo}</Typography>
         </Grid>
 
         <hr />

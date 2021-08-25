@@ -49,6 +49,7 @@ function Home() {
             make: doc.data().make,
             model: doc.data().model,
             extraInfo: doc.data().extraInfo,
+            isAddedToCart: false,
           };
           return data;
         });

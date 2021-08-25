@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { selectProducts } from "../../../redux/reducers/ProductSlice";
 import useStyles from "../../../css/style";
 import "../../../css/App.css";
-import { setCurrentProduct, setSimilarProducts } from "../../../redux";
+import { setCurrentProduct } from "../../../redux";
 
 function PopularProducts() {
   const classes = useStyles();
@@ -62,9 +62,14 @@ function PopularProducts() {
                     justifyContent: "center",
                   }}
                 >
-                  <div className={classes.img_box}>
-                    <img className={classes.img} src={product.image} />
-                  </div>
+                  <Link to={`/product/${product.productID}`}>
+                    <div
+                      className={classes.img_box}
+                      onClick={() => dispatch(setCurrentProduct(item))}
+                    >
+                      <img className={classes.img} src={product.image} />
+                    </div>
+                  </Link>
                 </Grid>
               </Paper>
             );

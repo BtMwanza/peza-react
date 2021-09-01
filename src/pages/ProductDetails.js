@@ -291,7 +291,7 @@ function ProductDetails() {
 
                   {currentProduct.isReserved !== undefined || false ? (
                     <Button
-                      disabled={currentUser === [] ? false : true}
+                      disabled={currentUser === [] ? true : false}
                       onClick={() =>
                         Operations.shared.reserveProduct(
                           currentProduct,
@@ -304,7 +304,7 @@ function ProductDetails() {
                     </Button>
                   ) : (
                     <Button
-                      disabled={currentUser === [] ? false : true}
+                      disabled={currentUser === [] ? true : false}
                       onClick={() =>
                         Operations.shared.reserveProduct(
                           currentProduct,

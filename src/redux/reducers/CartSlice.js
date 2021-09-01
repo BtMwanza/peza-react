@@ -24,6 +24,7 @@ export const cartSlice = createSlice({
       const added = state.cart.find(
         ({ productID }) => productID === action.payload.productID
       );
+
       if (!added) {
         state.cart.push(action.payload);
       } else {
@@ -33,16 +34,11 @@ export const cartSlice = createSlice({
     },
     deleteItem: (state, action) => {
       //  console.log("DELETE_ACTION: ", action.payload.id);
-      const added = state.cart.find(
-        ({ productID }) => productID === action.payload.id
-      );
-      console.log("IS_IT_THERE: ", added);
-      if (added) {
-        let cart = state.cart;
-        cart.splice(action.payload.id, 1);
 
-        cart = state.cart;
-      }
+      let cart = state.cart;
+      cart.splice(action.payload.id, 1);
+
+      cart = state.cart;
     },
     increaseQuantity: (state, action) => {
       let idx = action.payload;

@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import Container from "@material-ui/core/Container";
-import firebase from "firebase/app";
+import firebase from "firebase";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import useStyles from "./../css/style";
 import { fetchData, setAmounts, setUser } from "./../redux";
@@ -10,6 +11,7 @@ import {
   fetchRecentProducts,
   fetchTransactions,
 } from "./../redux/reducers/ProductSlice";
+import { fetchCurrentUser } from "./../redux/reducers/AuthSlice";
 import { fetchMerchants } from "./../redux/reducers/MerchantSlice";
 import { Footer, Products } from "./../components";
 
@@ -17,14 +19,24 @@ function Home() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const db = firebase.firestore().collection("PRODUCTS");
+  const [isLoading, setIsLoading] = React.useState(true);
+  const userID = getUserID();
+  function getUserID(params) {
+    if (firebase.auth().currentUser !== null) {
+      return firebase.auth().currentUser.uid;
+    } else {
+      return "";
+    }
+  }
 
   React.useEffect(() => {
+    //dispatch(fetchCurrentUser());
     dispatch(fetchRecentProducts());
     dispatch(fetchTransactions());
     dispatch(fetchPopularProducts());
     dispatch(fetchMerchants());
-
-    //   console.log("UID: ", firebase.auth().currentUser.uid);
+    getUserID();
+    console.log("GET USER: ", userID);
 
     const productsListener = db
       .where("isReserved" || "isSold", "!=", true)
@@ -68,12 +80,13 @@ function Home() {
         dispatch(setAmounts(productList));
       });
 
-    /* const userListener = firebase
+    const userListener = firebase
       .firestore()
       .collection("USERS")
-      .where("userID", "==", firebase.auth().currentUser.uid)
+      .where("userID", "==", userID)
       .onSnapshot((snapshot) => {
-        const user = snapshot.docs.map((doc) => {
+        console.log("ID: ", userID);
+        const fbUser = snapshot.docs.map((doc) => {
           const data = {
             key: doc.data().userID,
             displayName: doc.data().displayName,
@@ -83,26 +96,37 @@ function Home() {
           };
           return data;
         });
-        dispatch(setUser(user));
-      }); */
+        dispatch(setUser(fbUser));
+        setIsLoading(false);
+      });
 
     // Stop listening for updates whenever the component unmounts
     return () => {
       productsListener();
       productsAmounts();
-      // userListener();
+      userListener();
     };
   }, []);
 
-  return (
-    <div>
+  if (isLoading === true) {
+    return (
       <Container className={classes.container}>
-        <Products />
+        <div className={classes.initialRoot}>
+          <CircularProgress />
+        </div>
       </Container>
+    );
+  } else {
+    return (
+      <div>
+        <Container className={classes.container}>
+          <Products />
+        </Container>
 
-      <Footer />
-    </div>
-  );
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default Home;

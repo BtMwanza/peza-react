@@ -58,11 +58,12 @@ class Fire {
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password);
 
-      let db = this.firestore.collection("users").doc(this.uid);
+      let db = this.firestore.collection("USERS").doc(this.uid);
 
       db.set({
-        name: user.name,
+        displayName: user.displayName,
         email: user.email,
+        phoneNumber: user.phoneNumber,
         avatar: null,
         userID: this.uid,
       });
@@ -128,6 +129,10 @@ class Fire {
       });
   };
 
+  get currentUser() {
+    return firebase.auth().currentUser;
+  }
+
   get firestore() {
     return firebase.firestore();
   }
@@ -139,6 +144,59 @@ class Fire {
   get timestamp() {
     return Date.now();
   }
+
+  verifyEmail = () => {
+    this.currentUser.sendEmailVerification().then(() => {
+      // Email verification sent!
+      // ...
+    });
+  };
+
+  updateProfile = (displayName, avatar) => {
+    let db = this.firestore.collection("USERS").doc(this.uid);
+    this.currentUser
+      .updateProfile({
+        displayName: displayName,
+        photoURL: avatar,
+      })
+      .then(() => {
+        // Update successful
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        alert(error.message);
+      });
+
+    db.set({ displayName: displayName, avatar: avatar }, { merge: true });
+  };
+
+  updateEmail = (email) => {
+    let db = this.firestore.collection("USERS").doc(this.uid);
+    this.currentUser
+      .updateEmail(email)
+      .then(() => {
+        // Update successful
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        alert(error.message);
+      });
+    db.set({ email: email }, { merge: true });
+  };
+
+  updatePassword = (password) => {
+    this.currentUser
+      .updatePassword(password)
+      .then(() => {
+        // Update successful.
+      })
+      .catch((error) => {
+        // An error ocurred
+        // ...
+      });
+  };
 }
 
 Fire.shared = new Fire();

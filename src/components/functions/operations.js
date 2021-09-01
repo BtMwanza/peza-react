@@ -70,6 +70,7 @@ class Operations {
   signIn = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email.trim(), password);
+
       console.log("FUNCTION EMAIL: ", email);
     } catch (error) {
       alert(error);
@@ -81,6 +82,29 @@ class Operations {
       Fire.shared.createUser(displayName, email, phoneNumber, password);
     } catch (error) {
       alert(error);
+    }
+  };
+
+  onChangeUserInfo = (displayname, phoneNumber) => {
+    try {
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  onChangeEmail = (email, password) => {
+    try {
+      Fire.shared.updateEmail(email);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  onChangePassword = (password) => {
+    try {
+      Fire.shared.updatePassword(password);
+    } catch (error) {
+      alert(error.message);
     }
   };
 }

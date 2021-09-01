@@ -7,14 +7,17 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useHistory } from "react-router-dom";
 
 import useStyles from "./../css/style";
 import "./../css/App.css";
+import { BUTTONS } from "./../shared";
 import Operations from "../components/functions/operations";
 import Fire from "./../lib/firebaseConfig";
 
 function SignIn() {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <Container>
@@ -36,8 +39,7 @@ function SignIn() {
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
+                  //   setSubmitting(false);
                 }, 400);
               }}
             >
@@ -56,7 +58,10 @@ function SignIn() {
                     <button
                       type="button"
                       class="btn btn-primary btn-floating mx-1"
-                      onClick={() => Fire.shared.googleSignIn(values.email)}
+                      onClick={() => {
+                        Fire.shared.googleSignIn(values.email, history);
+                        history.push("/");
+                      }}
                     >
                       <i class="fab fa-google"></i>
                     </button>
@@ -67,7 +72,7 @@ function SignIn() {
                   <div class="form mb-3">
                     <TextField
                       label="Email"
-                      id="email"
+                      id="loginEmail"
                       size="small"
                       fullWidth
                       type="email"
@@ -82,7 +87,7 @@ function SignIn() {
                   <div class="form mb-3">
                     <TextField
                       label="Password"
-                      id="password"
+                      id="loginPassword"
                       size="small"
                       fullWidth
                       type="password"
@@ -122,10 +127,15 @@ function SignIn() {
                     class="btn btn-primary btn-block mb-4"
                     disabled={isSubmitting}
                     onClick={() => {
-                      Operations.shared.signIn(values.email, values.password);
+                      Operations.shared.signIn(
+                        values.email,
+                        values.password,
+                        history
+                      );
+                      history.push("/");
                     }}
                   >
-                    Sign in
+                    {BUTTONS.register}
                   </Button>
                 </Form>
               )}

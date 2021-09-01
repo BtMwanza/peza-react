@@ -127,10 +127,8 @@ function SideBar() {
           <h3>Filters</h3>
           <div>
             <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
               <InputBase
+                fullWidth
                 name="searchInput"
                 placeholder="Search…"
                 classes={{
@@ -235,7 +233,7 @@ function SideBar() {
                 value={merchant}
                 onChange={handleMerchantChange}
               >
-                <MenuItem value="">
+                <MenuItem value="none">
                   <em>None</em>
                 </MenuItem>
                 {Merchants.map((item) => {

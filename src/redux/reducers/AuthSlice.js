@@ -22,7 +22,7 @@ export const fetchCurrentUser = createAsyncThunk(
             phoneNumber: doc.data().phoneNumber,
           });
         }
-        //  console.log('AUTH_REDUCER: ', data);
+        console.log("AUTH_REDUCER: ", data);
       });
       return data;
     });
@@ -39,20 +39,9 @@ export const authSlice = createSlice({
     isLoading: false,
   },
   reducers: {
-    login: async (state, action) => {
-      state.user = action.user;
-    },
-    registerUser: (state, action) => {
-      state.user = action.user;
-    },
-    changeProfile: (state, action) => {
-      state.user = action.user;
-    },
-    logout: async (state, action) => {
-      state.user = action.user;
-    },
     setUser: (state, action) => {
       state.currentUser = action.payload;
+      //  console.log("CURRENT_USER: ", action.payload);
     },
   },
   extraReducers: {

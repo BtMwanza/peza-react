@@ -51,7 +51,7 @@ function Cart(props) {
           ) : (
             <Paper className={classes.paper2}>
               {cart.map((item, index) => {
-                const { productName, image, category, price } = item;
+                const { productID, productName, image, category, price } = item;
                 let vendor = Operations.shared.getVendorName(item, merchants);
                 return (
                   <Grid container>
@@ -88,7 +88,9 @@ function Cart(props) {
                               Delete
                               <FiTrash2
                                 size={20}
-                                onClick={() => dispatch(deleteItem(index))}
+                                onClick={() =>
+                                  dispatch(deleteItem({ id: productID }))
+                                }
                               />
                             </Button>
                             {item.isReserved === undefined || false ? (
@@ -114,9 +116,7 @@ function Cart(props) {
                       </Grid>
 
                       <Grid item>
-                        <Typography variant="subtitle1">
-                          K{price.toFixed(2)}
-                        </Typography>
+                        <Typography variant="subtitle1">K{price}</Typography>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -141,11 +141,11 @@ function Cart(props) {
               </div>
 
               <div className="mb-3">
-                <div class="pt-4">
-                  <h5 class="mb-4">We accept</h5>
+                <div className="pt-4">
+                  <h5 className="mb-4">We accept</h5>
 
                   <img
-                    class="mx-0"
+                    className="mx-0"
                     width="45px"
                     src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
                     alt="Visa"

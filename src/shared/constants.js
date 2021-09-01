@@ -18,6 +18,7 @@ export const BUTTONS = {
   code: "Send code",
   confirm: "Confirm",
   send: "Send code",
+  save: "Save",
   register: "Register",
   resend: "Resend code",
   cart: "Add to cart",

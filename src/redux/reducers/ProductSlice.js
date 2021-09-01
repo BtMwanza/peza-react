@@ -238,6 +238,7 @@ export const productSlice = createSlice({
     },
     setCurrentTransaction: (state, action) => {
       state.currentTransaction = action.payload;
+      console.log("CURRENT_TXN: ", action.payload);
     },
     setAmounts: (state, action) => {
       state.amounts = action.payload;

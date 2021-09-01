@@ -81,10 +81,6 @@ function Profile() {
         <Tab label="My Details" {...a11yProps(0)} />
         <Tab label="My Orders" {...a11yProps(1)} />
         <Tab label="Payment Methods" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} />
       </Tabs>
 
       <UserDetails value={value} index={0} />
@@ -92,26 +88,6 @@ function Profile() {
       <UserOrders value={value} index={1} />
 
       <UserPaymentMethods value={value} index={2} />
-
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ background: "#00675b", marginBottom: 10 }}
-          onClick={() => Fire.shared.signOut()}
-        >
-          Logout
-        </Button>
-      </TabPanel>
     </div>
   );
 }

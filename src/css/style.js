@@ -50,15 +50,6 @@ const useStyles = makeStyles((theme) => ({
     },
     marginBottom: theme.spacing(2),
   },
-  searchIcon: {
-    padding: theme.spacing(0, 1),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   inputRoot: {
     color: "#00675b",
     borderWidth: 2,
@@ -277,6 +268,23 @@ const useStyles = makeStyles((theme) => ({
   },
   checkoutLeft: {
     backgroundColor: "#d1f2eb",
+  },
+
+  // Activity Indicator
+  initialRoot: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > * + *": {
+      marginLeft: theme.spacing(2),
+    },
+  },
+
+  // Transaction list
+  ListRoot: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 

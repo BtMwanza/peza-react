@@ -10,6 +10,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import useStyles from "./../css/style";
 import "./../css/App.css";
+import { BUTTONS } from "./../shared";
 import Operations from "../components/functions/operations";
 
 function SignUp() {
@@ -40,7 +41,6 @@ function SignUp() {
               }}
               onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
                   setSubmitting(false);
                 }, 400);
               }}
@@ -174,7 +174,7 @@ function SignUp() {
                       )
                     }
                   >
-                    Sign in
+                    {BUTTONS.login}
                   </Button>
                 </Form>
               )}

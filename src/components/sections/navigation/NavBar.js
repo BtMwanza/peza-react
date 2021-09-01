@@ -4,41 +4,37 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-import SearchIcon from "@material-ui/icons/Search";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { FiShoppingCart, FiUser } from "react-icons/fi";
 import HomeIcon from "@material-ui/icons/Home";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LockIcon from "@material-ui/icons/Lock";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FolderIcon from "@material-ui/icons/Folder";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { withRouter } from "react-router-dom";
 import clsx from "clsx";
+import firebase from "firebase";
 
 import { selectCart } from "./../../../redux/reducers/CartSlice";
-import { selectProducts } from "./../../../redux/reducers/ProductSlice";
 import { selectAuth } from "./../../../redux/reducers/AuthSlice";
 import useStyles from "./../../../css/style";
 import "./../../../css/App.css";
+import Fire from "../../../lib/firebaseConfig";
 
 function ProminentAppBar(props) {
-  const { history, name, location } = props;
+  const { history, pageName, location } = props;
   const cart = useSelector(selectCart);
   const { currentUser } = useSelector(selectAuth);
   const classes = useStyles();
@@ -78,6 +74,10 @@ function ProminentAppBar(props) {
 
     setState({ ...state, [anchor]: open });
   };
+
+  React.useEffect(() => {
+    console.log("PAGE_NAME: ", pageName);
+  }, []);
 
   const handleClick = (event) => {
     setMenuEl(event.currentTarget);
@@ -165,22 +165,6 @@ function ProminentAppBar(props) {
         </IconButton>
         <p>Cart</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
 
       {currentUser.map((item) => {
         const { key, displayName, avatar } = item;
@@ -212,6 +196,23 @@ function ProminentAppBar(props) {
           </MenuItem>
         );
       })}
+      {firebase.auth().currentUser !== null ? (
+        <MenuItem>
+          <IconButton
+            aria-label="logout"
+            color="inherit"
+            onClick={() => {
+              Fire.shared.signOut();
+              history.push("/");
+            }}
+          >
+            <ExitToAppIcon />
+          </IconButton>
+          <p>Logout</p>
+        </MenuItem>
+      ) : (
+        <div></div>
+      )}
     </Menu>
   );
 
@@ -262,7 +263,7 @@ function ProminentAppBar(props) {
           </Drawer>
 
           <Typography variant="h6" className={classes.title}>
-            {location.pathname}
+            {props.pageName}
           </Typography>
 
           <div className={classes.grow} />
@@ -276,40 +277,26 @@ function ProminentAppBar(props) {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
+            <IconButton
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={() => history.push("/profile")}
+              color="inherit"
+            >
+              {currentUser && <AccountCircle />}
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-
-            {currentUser.map((item) => {
-              const { key, displayName, avatar } = item;
-              return (
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={() => history.push("/profile")}
-                  color="inherit"
-                >
-                  {avatar !== null ? (
-                    <AccountCircle />
-                  ) : (
-                    <Avatar
-                      className={classes.smallAvatar}
-                      alt="My Avatar"
-                      src={avatar}
-                    />
-                  )}
-                </IconButton>
-              );
-            })}
+            {firebase.auth().currentUser !== null && (
+              <Button
+                color="inherit"
+                onClick={() => {
+                  Fire.shared.signOut();
+                  history.push("/");
+                }}
+              >
+                Logout
+              </Button>
+            )}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

@@ -286,6 +286,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
+
+  formControl2: {
+    margin: theme.spacing(1),
+  },
 }));
 
 export default useStyles;

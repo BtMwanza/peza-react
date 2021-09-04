@@ -28,7 +28,19 @@ const initialState = {
   similarProducts: [],
   selectedPriceRange: [0, 0],
   currentProduct: {},
-  currentTransaction: {},
+  currentTransaction: {
+    txnRef: "",
+    userID: "",
+    date: "",
+    totalPrice: "",
+    delivery: "",
+    customer: {
+      name: "",
+      email: "",
+      phoneNumber: "",
+    },
+    cartRecord: [],
+  },
   isLoading: false,
   selectedCategory: 0,
   searchText: "",
@@ -240,6 +252,9 @@ export const productSlice = createSlice({
       state.currentTransaction = action.payload;
       console.log("CURRENT_TXN: ", action.payload);
     },
+    setReservedProducts: (state, action) => {
+      state.reservedProducts = action.payload;
+    },
     setAmounts: (state, action) => {
       state.amounts = action.payload;
     },
@@ -286,6 +301,7 @@ export const {
   filterMake,
   filterModel,
   filterPrice,
+  setReservedProducts,
 } = productSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

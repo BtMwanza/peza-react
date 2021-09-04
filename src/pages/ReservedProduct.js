@@ -16,7 +16,7 @@ import { selectCart } from "./../redux/reducers/CartSlice";
 import useStyles from "./../css/style";
 import "./../css/App.css";
 import Operations from "../components/functions/operations";
-import { filterList, searchList, setCurrentProduct } from "./../redux";
+import { filterList, searchList, setReservedProducts } from "./../redux";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
 import { selectMerchants } from "./../redux/reducers/MerchantSlice";
 import { Footer, Pagination } from "./../components";
@@ -36,7 +36,7 @@ function ReservedProduct() {
   const [productPerPage] = React.useState(15);
   const indexOfLastProduct = currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = reservedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -49,6 +49,9 @@ function ReservedProduct() {
   };
   const startDate = Date.now();
   const expiryDate = event.setHours(72);
+  const [data, setData] = React.useState({
+    reservedProducts: [],
+  });
 
   const onChangeHandler = (event) => {
     const { name, value } = event.currentTarget;
@@ -79,6 +82,37 @@ function ReservedProduct() {
   }
 
   React.useEffect(() => {
+    // Get Product from firebase
+    const productsListener = db
+      .where("isReserved", "==", true)
+      .onSnapshot((snapshot) => {
+        const productList = snapshot.docs.map((doc) => {
+          const data = {
+            key: doc.id,
+            productID: doc.id,
+            currentQuantity: parseInt(doc.data().currentQuantity),
+            vendorID: doc.data().vendor,
+            productName: doc.data().productName,
+            image: doc.data().image,
+            price: doc.data().price,
+            desc: doc.data().desc,
+            category: doc.data().category,
+            createdAt: doc.data().createdAt,
+            isSold: doc.data().isSold,
+            isReserved: doc.data().isReserved,
+            productCode: doc.data().productCode,
+            brand: doc.data().brand,
+            vin: doc.data().VIN,
+            year: doc.data().year,
+            make: doc.data().make,
+            model: doc.data().model,
+            extraInfo: doc.data().extraInfo,
+          };
+          return data;
+        });
+        setData({ ...data, reservedProducts: productList });
+        dispatch(setReservedProducts(productList));
+      });
     const timer = setInterval(() => {
       setProgress(() => {
         const second = 1000;
@@ -100,12 +134,18 @@ function ReservedProduct() {
 
     return () => {
       clearInterval(timer);
+      productsListener();
     };
   }, []);
 
   return (
     <main>
       <Container className={classes.container}>
+        <Grid item>
+          <Typography variant="h6" className="text-center" gutterBottom>
+            Reserved Products
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <Masonry
             breakpointCols={breakpointColumnsObj}
@@ -172,7 +212,7 @@ function ReservedProduct() {
         <Grid item xs={12}>
           <Pagination
             productsPerPage={productPerPage}
-            totalProducts={products.length}
+            totalProducts={reservedProducts.length}
             paginate={paginate}
             currentPage={currentPage}
           />

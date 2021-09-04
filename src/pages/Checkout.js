@@ -33,7 +33,7 @@ function Checkout() {
   const delivery = 0;
   return (
     <>
-      <Container className={classes.container}>
+      <Container className={classes.container} style={{ height: "100vh" }}>
         <NoSsr>
           <GoogleFontLoader fonts={[{ font: "Ubuntu", weights: [400, 700] }]} />
         </NoSsr>

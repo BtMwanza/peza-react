@@ -5,7 +5,7 @@ import firebase from "firebase";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import useStyles from "./../css/style";
-import { fetchData, setAmounts, setUser } from "./../redux";
+import { fetchData, setAmounts, setUser, setAuthState } from "./../redux";
 import {
   fetchPopularProducts,
   fetchRecentProducts,
@@ -21,6 +21,13 @@ function Home() {
   const db = firebase.firestore().collection("PRODUCTS");
   const [isLoading, setIsLoading] = React.useState(true);
   const userID = getUserID();
+  function onAuthStateChanged(user) {
+    if (user !== null) {
+      dispatch(setAuthState(true));
+    }
+    console.log("USER: ", user);
+  }
+
   function getUserID(params) {
     if (firebase.auth().currentUser !== null) {
       return firebase.auth().currentUser.uid;
@@ -30,6 +37,7 @@ function Home() {
   }
 
   React.useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
     //dispatch(fetchCurrentUser());
     dispatch(fetchRecentProducts());
     dispatch(fetchTransactions());
@@ -102,6 +110,7 @@ function Home() {
 
     // Stop listening for updates whenever the component unmounts
     return () => {
+      subscriber();
       productsListener();
       productsAmounts();
       userListener();

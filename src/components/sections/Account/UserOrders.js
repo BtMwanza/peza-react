@@ -98,69 +98,62 @@ function UserOrders(props) {
             </Paper>
           </Grid>
 
-          {currentTransaction !== {} ? (
-            <Grid item xs={12} md={6}>
-              <Grid xs={12}>
-                <Typography variant="h6" className="text-center">
-                  Transaction/{currentTransaction.txnRef}
-                </Typography>
-              </Grid>
-
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>Name</Typography>
-                <Typography>{currentTransaction.customer.name}</Typography>
-              </Grid>
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>Phone</Typography>
-                <Typography>
-                  {currentTransaction.customer.phoneNumber}
-                </Typography>
-              </Grid>
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>Date</Typography>
-                <Typography>
-                  {moment(currentTransaction.date).format("lll")}
-                </Typography>
-              </Grid>
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>Total</Typography>
-                <Typography>K{currentTransaction.totalPrice}</Typography>
-              </Grid>
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>Delivery</Typography>
-                <Typography>{delivery}</Typography>
-              </Grid>
-              <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                <Typography>
-                  {currentTransaction.cartRecord.length}
-                  Items bought
-                </Typography>
-              </Grid>
-
-              {currentTransaction.cartRecord.map((item) => {
-                const { productID, productName, price } = item;
-                return (
-                  <Grid
-                    key={productID}
-                    className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
-                  >
-                    <Typography variant="subtitle2">{productName}</Typography>
-                    <Typography variant="subtitle2">
-                      K{price.toFixed(2)}
-                    </Typography>
-                  </Grid>
-                );
-              })}
+          <Grid item xs={12} md={6}>
+            <Grid xs={12}>
+              <Typography variant="h6" className="text-center">
+                Transaction/{currentTransaction.txnRef}
+              </Typography>
             </Grid>
-          ) : (
-            <Grid item xs={12} md={6}>
-              <Grid xs={12}>
-                <Typography variant="h6" className="text-center">
-                  Transaction Details
-                </Typography>
-              </Grid>
-            </Grid>
-          )}
+            {currentTransaction !== {} && (
+              <div>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>Name</Typography>
+                  <Typography>{currentTransaction.customer.name}</Typography>
+                </Grid>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>Phone</Typography>
+                  <Typography>
+                    {currentTransaction.customer.phoneNumber}
+                  </Typography>
+                </Grid>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>Date</Typography>
+                  <Typography>
+                    {moment(currentTransaction.date).format("lll")}
+                  </Typography>
+                </Grid>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>Total</Typography>
+                  <Typography>K{currentTransaction.totalPrice}</Typography>
+                </Grid>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>Delivery</Typography>
+                  <Typography>{delivery}</Typography>
+                </Grid>
+                <Grid className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                  <Typography>
+                    {currentTransaction.cartRecord.length}
+                    Items bought
+                  </Typography>
+                </Grid>
+
+                {currentTransaction.cartRecord.map((item) => {
+                  const { productID, productName, price } = item;
+                  return (
+                    <Grid
+                      key={productID}
+                      className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
+                    >
+                      <Typography variant="subtitle2">{productName}</Typography>
+                      <Typography variant="subtitle2">
+                        K{price.toFixed(2)}
+                      </Typography>
+                    </Grid>
+                  );
+                })}
+              </div>
+            )}
+          </Grid>
         </Grid>
       </Grid>
     </Container>

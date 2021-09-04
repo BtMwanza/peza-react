@@ -33,6 +33,8 @@ export const fetchMerchant = createAsyncThunk(
               avatar: doc.data().avatar,
               phoneNumber: doc.data().phoneNumber,
               location: doc.data().location,
+              delivery: doc.data().delivery,
+              deliveryPrices: doc.data().deliveryPrices,
             });
           }
         });
@@ -64,6 +66,8 @@ export const fetchMerchants = createAsyncThunk(
             avatar: doc.data().avatar,
             phoneNumber: doc.data().phoneNumber,
             location: doc.data().location,
+            delivery: doc.data().delivery,
+            deliveryPrices: doc.data().deliveryPrices,
           });
         });
         return data;

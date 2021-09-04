@@ -1,16 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import firebase from "firebase/app";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import IconButton from "@material-ui/core/IconButton";
 import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
 import {
   FiChevronDown,
   FiChevronUp,
@@ -25,9 +27,7 @@ import useStyles from "./../css/style";
 import "./../css/App.css";
 import Operations from "../components/functions/operations";
 import { fetchData } from "./../redux";
-import { selectProducts } from "./../redux/reducers/ProductSlice";
 import { selectMerchants } from "./../redux/reducers/MerchantSlice";
-import FlutterwaveBtn from "./../lib/flutterwave";
 import Fire from "./../lib/firebaseConfig";
 
 function Cart(props) {
@@ -37,6 +37,11 @@ function Cart(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const total = Operations.shared.getTotal(cart);
+  const [distance, setDistance] = React.useState("female");
+
+  const handleDistanceChange = (event) => {
+    setDistance(event.target.value);
+  };
 
   return (
     <Container className={classes.container}>
@@ -107,10 +112,12 @@ function Cart(props) {
                           </ButtonGroup>
                         </Grid>
                         <Grid xs>
-                          <Chip
-                            label={"Delivery" && <FiTruck />}
-                            color="secondary"
-                          />
+                          {vendor !== "Zambia Auto Ltd" && (
+                            <Chip
+                              label={"Delivery" && <FiTruck />}
+                              color="secondary"
+                            />
+                          )}
                         </Grid>
                         <Divider style={{ marginBottom: 20 }} />
                       </Grid>
@@ -132,26 +139,35 @@ function Cart(props) {
                 purchase, adding items to your cart does not mean booking them.
               </p>
 
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 <div className="pt-4">
-                  <h5 className="mb-4">Expected delivery</h5>
+                  <h5 className="mb-3">Delivery</h5>
 
-                  <p className="mb-0"> Thu., 12.03. - Mon., 16.03.</p>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">
+                      Please select your distance
+                    </FormLabel>
+                    <RadioGroup
+                      aria-label="distance"
+                      name="distance1"
+                      value={distance}
+                      onChange={handleDistanceChange}
+                    >
+                      {merchants.map((item) => {
+                        const { deliveryPrices } = item;
+                        console.log("DELIVERY: ", deliveryPrices);
+                        deliveryPrices.map((prices) => {
+                          <FormControlLabel
+                            value={prices}
+                            control={<Radio />}
+                            label={prices}
+                          />;
+                        });
+                      })}
+                    </RadioGroup>
+                  </FormControl>
                 </div>
-              </div>
-
-              <div className="mb-3">
-                <div className="pt-4">
-                  <h5 className="mb-4">We accept</h5>
-
-                  <img
-                    className="mx-0"
-                    width="45px"
-                    src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                    alt="Visa"
-                  />
-                </div>
-              </div>
+              </div> */}
             </Paper>
           </Grid>
         </Grid>
@@ -170,7 +186,7 @@ function Cart(props) {
               className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0"
             >
               <Typography>Delivery</Typography>
-              <Typography>{}</Typography>
+              <Typography>K0.00</Typography>
             </Grid>
             <Divider />
             <Grid

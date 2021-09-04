@@ -43,6 +43,9 @@ export const authSlice = createSlice({
       state.currentUser = action.payload;
       //  console.log("CURRENT_USER: ", action.payload);
     },
+    setAuthState: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
   },
   extraReducers: {
     // Add reducers for additional action types here, and handle loading state as needed
@@ -54,8 +57,7 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { login, registerUser, changeProfile, logout, setUser } =
-  authSlice.actions;
+export const { setAuthState, setUser } = authSlice.actions;
 
 export const selectAuth = (state) => state.auth;
 

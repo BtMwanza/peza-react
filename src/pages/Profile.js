@@ -80,14 +80,11 @@ function Profile() {
       >
         <Tab label="My Details" {...a11yProps(0)} />
         <Tab label="My Orders" {...a11yProps(1)} />
-        <Tab label="Payment Methods" {...a11yProps(2)} />
       </Tabs>
 
       <UserDetails value={value} index={0} />
 
       <UserOrders value={value} index={1} />
-
-      <UserPaymentMethods value={value} index={2} />
     </div>
   );
 }

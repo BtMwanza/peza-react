@@ -6,6 +6,7 @@ export {
   setCurrentTransaction,
   setAmounts,
   setSimilarProducts,
+  setReservedProducts,
   filterMerchants,
   filterMake,
   filterModel,
@@ -19,11 +20,5 @@ export {
   clearCart,
   addToPayload,
 } from "./reducers/CartSlice";
-export {
-  login,
-  registerUser,
-  logout,
-  changeProfile,
-  setUser,
-} from "./reducers/AuthSlice";
+export { setAuthState, setUser } from "./reducers/AuthSlice";
 export { setMerchantID } from "./reducers/MerchantSlice";

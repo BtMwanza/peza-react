@@ -36,7 +36,7 @@ import Fire from "../../../lib/firebaseConfig";
 function ProminentAppBar(props) {
   const { history, pageName, location } = props;
   const cart = useSelector(selectCart);
-  const { currentUser } = useSelector(selectAuth);
+  const { currentUser, isLoggedIn } = useSelector(selectAuth);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuEl, setMenuEl] = React.useState(null);
@@ -57,11 +57,6 @@ function ProminentAppBar(props) {
       icon: <LockIcon />,
       onClick: () => history.push("/reserved_products"),
     },
-    {
-      text: "Transactions",
-      icon: <FolderIcon />,
-      onClick: () => history.push("/reserved_products"),
-    },
   ];
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -74,10 +69,6 @@ function ProminentAppBar(props) {
 
     setState({ ...state, [anchor]: open });
   };
-
-  React.useEffect(() => {
-    console.log("PAGE_NAME: ", pageName);
-  }, []);
 
   const handleClick = (event) => {
     setMenuEl(event.currentTarget);
@@ -104,6 +95,11 @@ function ProminentAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  React.useEffect(() => {
+    console.log("isLoggedIn? ", isLoggedIn);
+    return () => {};
+  }, []);
+
   // Web
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -116,19 +112,20 @@ function ProminentAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {currentUser.map((item) => {
-        const { displayName } = item;
-        return (
-          <MenuItem
-            onClick={() => {
-              history.push("/profile");
-              handleMenuClose();
-            }}
-          >
-            {displayName}
-          </MenuItem>
-        );
-      })}
+      {isLoggedIn &&
+        currentUser.map((item) => {
+          const { displayName } = item;
+          return (
+            <MenuItem
+              onClick={() => {
+                history.push("/profile");
+                handleMenuClose();
+              }}
+            >
+              {displayName}
+            </MenuItem>
+          );
+        })}
       <MenuItem
         onClick={() => {
           history.push("/cart");
@@ -166,36 +163,37 @@ function ProminentAppBar(props) {
         <p>Cart</p>
       </MenuItem>
 
-      {currentUser.map((item) => {
-        const { key, displayName, avatar } = item;
-        return (
-          <MenuItem
-            key={key}
-            onClick={() => {
-              history.push("/profile");
-              handleMobileMenuClose();
-            }}
-          >
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
+      {isLoggedIn &&
+        currentUser.map((item) => {
+          const { key, displayName, avatar } = item;
+          return (
+            <MenuItem
+              key={key}
+              onClick={() => {
+                history.push("/profile");
+                handleMobileMenuClose();
+              }}
             >
-              {avatar !== null ? (
-                <AccountCircle />
-              ) : (
-                <Avatar
-                  className={classes.smallAvatar}
-                  alt="My Avatar"
-                  src={avatar}
-                />
-              )}
-            </IconButton>
-            <p>{displayName}</p>
-          </MenuItem>
-        );
-      })}
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                {avatar !== null ? (
+                  <AccountCircle />
+                ) : (
+                  <Avatar
+                    className={classes.smallAvatar}
+                    alt="My Avatar"
+                    src={avatar}
+                  />
+                )}
+              </IconButton>
+              <p>{displayName}</p>
+            </MenuItem>
+          );
+        })}
       {firebase.auth().currentUser !== null ? (
         <MenuItem>
           <IconButton
@@ -262,10 +260,6 @@ function ProminentAppBar(props) {
             {list(anchor)}
           </Drawer>
 
-          <Typography variant="h6" className={classes.title}>
-            {props.pageName}
-          </Typography>
-
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton
@@ -277,15 +271,17 @@ function ProminentAppBar(props) {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={() => history.push("/profile")}
-              color="inherit"
-            >
-              {currentUser && <AccountCircle />}
-            </IconButton>
+            {isLoggedIn && (
+              <IconButton
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={() => history.push("/profile")}
+                color="inherit"
+              >
+                {currentUser && <AccountCircle />}
+              </IconButton>
+            )}
             {firebase.auth().currentUser !== null && (
               <Button
                 color="inherit"

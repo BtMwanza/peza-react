@@ -5,7 +5,6 @@ export {
   setCurrentProduct,
   setCurrentTransaction,
   setAmounts,
-  setSimilarProducts,
   setReservedProducts,
   filterMerchants,
   filterMake,
@@ -21,4 +20,4 @@ export {
   addToPayload,
 } from "./reducers/CartSlice";
 export { setAuthState, setUser } from "./reducers/AuthSlice";
-export { setMerchantID } from "./reducers/MerchantSlice";
+export { setMerchantID, setMerchant } from "./reducers/MerchantSlice";

@@ -55,13 +55,11 @@ class Operations {
       .toFixed(2);
   };
 
-  getVendorName = (item, vendors) => {
-    let currentID = item.vendorID;
-    console.log("ID: ", currentID);
+  getVendorName = (vendorID, merchants) => {
+    let currentID = vendorID;
 
     if (currentID) {
-      let filter = vendors.find(({ uid }) => uid === currentID);
-      console.log("VENDOR: ", filter.displayName);
+      let filter = merchants.find(({ uid }) => uid === currentID);
 
       return filter.displayName;
     }
@@ -70,8 +68,6 @@ class Operations {
   signIn = async (email, password) => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email.trim(), password);
-
-      console.log("FUNCTION EMAIL: ", email);
     } catch (error) {
       alert(error);
     }

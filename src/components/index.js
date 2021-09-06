@@ -15,4 +15,3 @@ export { default as Reviews } from "./sections/content/Reviews";
 // Account Tabs
 export { default as UserDetails } from "./sections/account/UserDetails";
 export { default as UserOrders } from "./sections/account/UserOrders";
-export { default as UserPaymentMethods } from "./sections/account/UserPaymentMethods";

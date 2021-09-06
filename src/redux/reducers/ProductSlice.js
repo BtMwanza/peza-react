@@ -181,7 +181,6 @@ export const productSlice = createSlice({
     },
     filterMerchants: (state, action) => {
       state.selectedMerchant = action.payload;
-      console.log("MERCHANT: ", action.payload);
 
       if (state.selectedMerchant !== "none") {
         let filter = state.mainList.filter(
@@ -246,33 +245,15 @@ export const productSlice = createSlice({
     },
     setCurrentProduct: (state, action) => {
       state.currentProduct = action.payload;
-      console.log("CURRENT: ", action.payload);
     },
     setCurrentTransaction: (state, action) => {
       state.currentTransaction = action.payload;
-      console.log("CURRENT_TXN: ", action.payload);
     },
     setReservedProducts: (state, action) => {
       state.reservedProducts = action.payload;
     },
     setAmounts: (state, action) => {
       state.amounts = action.payload;
-    },
-    setSimilarProducts: (state, action) => {
-      const productCategory = action.payload;
-
-      let similar = state.mainList.filter(
-        ({ category }) => category === "Tyre & Rims"
-      );
-      state.similarProducts = similar;
-
-      console.log(
-        "SIMILAR: ",
-        state.similarProducts,
-        "&&",
-        "CATEGORY: ",
-        productCategory
-      );
     },
   },
   extraReducers: {
@@ -296,7 +277,6 @@ export const {
   setCurrentProduct,
   setCurrentTransaction,
   setAmounts,
-  setSimilarProducts,
   filterMerchants,
   filterMake,
   filterModel,

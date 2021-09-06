@@ -118,7 +118,7 @@ function ProminentAppBar(props) {
           return (
             <MenuItem
               onClick={() => {
-                history.push("/profile");
+                history.push("/account");
                 handleMenuClose();
               }}
             >
@@ -170,7 +170,7 @@ function ProminentAppBar(props) {
             <MenuItem
               key={key}
               onClick={() => {
-                history.push("/profile");
+                history.push("/account");
                 handleMobileMenuClose();
               }}
             >
@@ -276,7 +276,7 @@ function ProminentAppBar(props) {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={() => history.push("/profile")}
+                onClick={() => history.push("/account")}
                 color="inherit"
               >
                 {currentUser && <AccountCircle />}

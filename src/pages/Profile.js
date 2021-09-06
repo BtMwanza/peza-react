@@ -14,12 +14,7 @@ import Operations from "../components/functions/operations";
 import Fire from "./../lib/firebaseConfig";
 import useStyles from "./../css/style";
 import "./../css/App.css";
-import {
-  Footer,
-  UserDetails,
-  UserOrders,
-  UserPaymentMethods,
-} from "./../components";
+import { Footer, UserDetails, UserOrders } from "./../components";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

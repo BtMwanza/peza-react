@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import firebase from "firebase/app";
 import GoogleFontLoader from "react-google-font-loader";
 import NoSsr from "@material-ui/core/NoSsr";
@@ -17,26 +16,22 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import moment from "moment";
 
 import { selectCart } from "./../redux/reducers/CartSlice";
-import { fetchMerchant } from "./../redux/reducers/MerchantSlice";
-import { fetchCurrentUser, selectAuth } from "./../redux/reducers/AuthSlice";
+import { selectMerchants } from "./../redux/reducers/MerchantSlice";
+import { selectAuth } from "./../redux/reducers/AuthSlice";
 import { selectProducts } from "./../redux/reducers/ProductSlice";
 import Operations from "./../components/functions/operations";
 import useStyles from "./../css/style";
-import {
-  addItem,
-  deleteItem,
-  setMerchantID,
-  setCurrentProduct,
-} from "./../redux";
-import { Footer, Products, Reviews } from "./../components";
+import { setMerchantID } from "./../redux";
+import { Footer, Reviews } from "./../components";
 
-function ProductDetails() {
-  const { productId } = useParams();
+function ProductDetails(props) {
+  const { history } = props;
   const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { currentProduct, products } = useSelector(selectProducts);
-  const { currentUser } = useSelector(selectAuth);
+  const { currentProduct } = useSelector(selectProducts);
+  const { merchants } = useSelector(selectMerchants);
+  const { currentUser, isLoggedIn } = useSelector(selectAuth);
   const [reserved, setReserved] = React.useState(false);
   const [reviews, setReviews] = React.useState([]);
   const [review, setReview] = React.useState("");
@@ -46,9 +41,10 @@ function ProductDetails() {
   const reserveDB = firebase.firestore().collection("RESERVED");
   const event = new Date();
   const reviewRef = firebase.firestore().collection("REVIEWS").doc(screenID);
-  const [data, setData] = React.useState({
-    products: [],
-  });
+  let vendorName = Operations.shared.getVendorName(
+    currentProduct.vendorID,
+    merchants
+  );
 
   function reserveProduct() {
     if (reserved === false) {
@@ -136,7 +132,6 @@ function ProductDetails() {
           }
           return data;
         });
-        console.log("REVIEWS: ", reviews);
         setReviews(reviews);
       });
 
@@ -196,7 +191,7 @@ function ProductDetails() {
                   <Chip
                     label={currentProduct.make}
                     size="small"
-                    color="secondary"
+                    color="primary"
                     style={{ marginRight: 2 }}
                   />
                 )}
@@ -206,16 +201,20 @@ function ProductDetails() {
                   <Chip
                     label={currentProduct.model}
                     size="small"
-                    color="secondary"
+                    color="primary"
                     style={{ marginRight: 2 }}
                   />
                 )}
 
                 <Chip
-                  label="View seller"
+                  label={vendorName}
                   size="small"
                   color="secondary"
                   style={{ marginRight: 2 }}
+                  onClick={() => {
+                    dispatch(setMerchantID(currentProduct.vendorID));
+                    history.push(`/vendor/${currentProduct.vendorID}`);
+                  }}
                 />
               </Grid>
               <Typography variant="subtitle2" gutterBottom>
@@ -253,7 +252,7 @@ function ProductDetails() {
                   <Chip
                     label={currentProduct.make}
                     size="small"
-                    color="secondary"
+                    color="primary"
                     style={{ marginRight: 2 }}
                   />
                 )}
@@ -263,7 +262,7 @@ function ProductDetails() {
                   <Chip
                     label={currentProduct.model}
                     size="small"
-                    color="secondary"
+                    color="primary"
                     style={{ marginRight: 2 }}
                   />
                 )}
@@ -333,9 +332,7 @@ function ProductDetails() {
           </Grid>
 
           <Grid item xs={12} style={{ marginBottom: 30 }}>
-            {currentUser !== [] ? (
-              <div></div>
-            ) : (
+            {isLoggedIn && (
               <Formik
                 initialValues={{ review: "" }}
                 onSubmit={(values, { setSubmitting }) => {

@@ -17,6 +17,8 @@ import {
 } from "./../../../redux";
 import { selectCart } from "./../../../redux/reducers/CartSlice";
 import { selectProducts } from "./../../../redux/reducers/ProductSlice";
+import { fetchMerchant } from "./../../../redux/reducers/MerchantSlice";
+
 import SideBar from "./SideBar";
 import Categories from "./Categories";
 import Pagination from "../navigation/Pagination";
@@ -73,7 +75,10 @@ function Explore() {
                     <Link to={`/product/${productID}`}>
                       <div
                         className={classes.image2}
-                        onClick={() => dispatch(setCurrentProduct(item))}
+                        onClick={() => {
+                          dispatch(setCurrentProduct(item));
+                          dispatch(fetchMerchant(item.vendorID));
+                        }}
                       >
                         <img
                           className={classes.imgFit}

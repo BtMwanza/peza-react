@@ -84,6 +84,9 @@ export const merchantSlice = createSlice({
     setMerchantID: (state, action) => {
       state.merchantID = action.payload;
     },
+    setMerchant: (state, action) => {
+      state.currentMerchant = action.payload;
+    },
   },
   extraReducers: {
     [fetchMerchant.fulfilled]: (state, action) => {
@@ -97,7 +100,7 @@ export const merchantSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setMerchantID } = merchantSlice.actions;
+export const { setMerchantID, setMerchant } = merchantSlice.actions;
 
 export const selectMerchants = (state) => state.merchants;
 

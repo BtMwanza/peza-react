@@ -25,19 +25,20 @@ import {
 import { deleteItem, selectCart } from "./../redux/reducers/CartSlice";
 import useStyles from "./../css/style";
 import "./../css/App.css";
+import { selectAuth } from "./../redux/reducers/AuthSlice";
 import Operations from "../components/functions/operations";
-import { fetchData } from "./../redux";
 import { selectMerchants } from "./../redux/reducers/MerchantSlice";
 import Fire from "./../lib/firebaseConfig";
 
 function Cart(props) {
-  const { history, name, location } = props;
+  const { history } = props;
   const cart = useSelector(selectCart);
   const { merchants } = useSelector(selectMerchants);
+  const { isLoggedIn } = useSelector(selectAuth);
   const classes = useStyles();
   const dispatch = useDispatch();
   const total = Operations.shared.getTotal(cart);
-  const [distance, setDistance] = React.useState("female");
+  const [distance, setDistance] = React.useState("");
 
   const handleDistanceChange = (event) => {
     setDistance(event.target.value);
@@ -56,15 +57,25 @@ function Cart(props) {
           ) : (
             <Paper className={classes.paper2}>
               {cart.map((item, index) => {
-                const { productID, productName, image, category, price } = item;
-                let vendor = Operations.shared.getVendorName(item, merchants);
+                const {
+                  productID,
+                  productName,
+                  image,
+                  category,
+                  price,
+                  vendorID,
+                } = item;
+                let vendor = Operations.shared.getVendorName(
+                  vendorID,
+                  merchants
+                );
                 return (
                   <Grid container>
                     <Grid item>
                       <div className={classes.cartImage}>
                         <img
                           className={classes.cartImg}
-                          alt="complex"
+                          alt={productName}
                           src={image}
                         />
                       </div>
@@ -205,8 +216,8 @@ function Cart(props) {
                 color="secondary"
                 style={{ background: "#00675b", marginBottom: 10 }}
                 onClick={() => {
-                  Fire.shared.subscribeToAuthChanges() !== null
-                    ? history.push("/auth")
+                  isLoggedIn !== true
+                    ? history.push("/authentication")
                     : history.push("/checkout");
                 }}
               >

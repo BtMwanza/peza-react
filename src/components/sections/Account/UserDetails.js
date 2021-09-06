@@ -269,7 +269,8 @@ function UserDetails(props) {
           <Grid item xs={12} md={6}>
             <Formik
               initialValues={{
-                password: "",
+                currentPassword: "",
+                newPassword: "",
                 confirmPassword: "",
               }}
               onSubmit={(values, { setSubmitting }) => {
@@ -290,18 +291,37 @@ function UserDetails(props) {
                 <Form>
                   <div class="form-outline mb-3">
                     <TextField
-                      label="Password"
-                      id="password"
+                      label="Current Password"
+                      id="currentPassword"
                       size="small"
                       fullWidth
                       type="password"
-                      name="password"
+                      name="currentPassword"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.password}
+                      value={values.currentPassword}
                     />
 
-                    {errors.password && touched.password && errors.password}
+                    {errors.currentPassword &&
+                      touched.currentPassword &&
+                      errors.currentPassword}
+                  </div>
+                  <div class="form-outline mb-3">
+                    <TextField
+                      label="New Password"
+                      id="newPassword"
+                      size="small"
+                      fullWidth
+                      type="password"
+                      name="newPassword"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.newPassword}
+                    />
+
+                    {errors.newPassword &&
+                      touched.newPassword &&
+                      errors.newPassword}
                   </div>
 
                   <div class="form-outline mb-3">

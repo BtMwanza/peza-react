@@ -17,6 +17,7 @@ import {
   Auth,
 } from "../pages";
 
+//
 function AppRouter() {
   const pages = [
     {
@@ -51,7 +52,7 @@ function AppRouter() {
     },
     {
       component: VendorInfo,
-      path: "/vendor/:displayName",
+      path: "/vendor/:vendorID",
       name: "Vendor Information",
     },
     {
@@ -88,7 +89,7 @@ function AppRouter() {
 
   return (
     <Switch>
-       {/*pages.map((item) => {
+      {pages.map((item) => {
         const { component, path, name } = item;
         return (
           <Route
@@ -99,30 +100,7 @@ function AppRouter() {
             component={component}
           />
         );
-      })*/}
-       <Route path="/" exact render={(props) => (<Home pageName="Home" {...props}/>)} />
-      <Route path="/product/:productID" exact render={(props) => (<ProductDetails pageName="Product Details" {...props}/>)} />
-      <Route path="/cart" exact render={(props) => (<Cart pageName="My Cart" {...props}/>)} />
-      <Route path="/checkout" exact render={(props) => (<Checkout pageName="Checkout" {...props}/>)} />
-      <Route path="/profile" exact render={(props) => (<Profile pageName="My Account" {...props}/>)} />
-      <Route
-        path="/reserved_products"
-        exact
-        render={(props) => (<ReservedProduct pageName="Reserved Product" {...props}/>)}
-      />
-      <Route
-        path="/vendor/:displayName"
-        name="Merchant"
-        exact
-        render={(props) => (<VendorInfo pageName="Merchant" {...props}/>)}
-      />
-      <Route path="/explore" exact render={(props) => (<Explore pageName="Explore" {...props}/>)} />
-
-      <Route path="/sign_in" exact component={SignIn} />
-      <Route path="/sign_up" exact component={SignUp} />
-      <Route path="/auth" exact component={Auth} />
-
-      <Route path="*" render={(props) => (<FourZeroFour pageName="404" {...props}/>)} /> 
+      })}
     </Switch>
   );
 }

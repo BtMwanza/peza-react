@@ -11,7 +11,6 @@ import {
   fetchRecentProducts,
   fetchTransactions,
 } from "./../redux/reducers/ProductSlice";
-import { fetchCurrentUser } from "./../redux/reducers/AuthSlice";
 import { fetchMerchants } from "./../redux/reducers/MerchantSlice";
 import { Footer, Products } from "./../components";
 
@@ -28,7 +27,7 @@ function Home() {
     console.log("USER: ", user);
   }
 
-  function getUserID(params) {
+  function getUserID() {
     if (firebase.auth().currentUser !== null) {
       return firebase.auth().currentUser.uid;
     } else {
@@ -38,7 +37,6 @@ function Home() {
 
   React.useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    //dispatch(fetchCurrentUser());
     dispatch(fetchRecentProducts());
     dispatch(fetchTransactions());
     dispatch(fetchPopularProducts());

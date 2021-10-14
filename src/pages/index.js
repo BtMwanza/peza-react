@@ -5,7 +5,7 @@ export { default as Cart } from "./Cart";
 export { default as Checkout } from "./Checkout";
 export { default as Profile } from "./Profile";
 export { default as ReservedProduct } from "./ReservedProduct";
-export { default as VendorInfo } from "./VendorInfo";
+export { default as MerchantInfo } from "./MerchantInfo";
 
 export { default as SignIn } from "./SignIn";
 export { default as SignUp } from "./SignUp";

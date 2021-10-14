@@ -41,8 +41,8 @@ function ProductDetails(props) {
   const reserveDB = firebase.firestore().collection("RESERVED");
   const event = new Date();
   const reviewRef = firebase.firestore().collection("REVIEWS").doc(screenID);
-  let vendorName = Operations.shared.getVendorName(
-    currentProduct.vendorID,
+  let merchantName = Operations.shared.getMerchantName(
+    currentProduct.merchantID,
     merchants
   );
 
@@ -207,13 +207,13 @@ function ProductDetails(props) {
                 )}
 
                 <Chip
-                  label={vendorName}
+                  label={merchantName}
                   size="small"
                   color="secondary"
                   style={{ marginRight: 2 }}
                   onClick={() => {
-                    dispatch(setMerchantID(currentProduct.vendorID));
-                    history.push(`/vendor/${currentProduct.vendorID}`);
+                    dispatch(setMerchantID(currentProduct.merchantID));
+                    history.push(`/merchant/${currentProduct.merchantID}`);
                   }}
                 />
               </Grid>

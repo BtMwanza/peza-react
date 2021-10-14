@@ -57,7 +57,7 @@ export const ROUTES = {
   map: "Map",
   productDetails: "ProductDetails",
   editProfile: "UpdateProfile",
-  vendor: "VendorInfo",
+  merchant: "MerchantInfo",
   transactions: "Transactions",
   transactionDetails: "TransactionDetails",
   summary: "Summary",

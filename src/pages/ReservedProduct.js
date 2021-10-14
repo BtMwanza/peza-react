@@ -91,7 +91,7 @@ function ReservedProduct() {
             key: doc.id,
             productID: doc.id,
             currentQuantity: parseInt(doc.data().currentQuantity),
-            vendorID: doc.data().vendor,
+            merchantID: doc.data().vendor,
             productName: doc.data().productName,
             image: doc.data().image,
             price: doc.data().price,
@@ -183,9 +183,6 @@ function ReservedProduct() {
                       K{price.toFixed(2)}
                     </Typography>
                   </Grid>
-                  <Grid item xs>
-                    <LinearProgress variant="determinate" value={progress} />
-                  </Grid>
 
                   <CardActions
                     style={{
@@ -196,9 +193,7 @@ function ReservedProduct() {
                     <IconButton>
                       <FiUnlock color="#00675b" size={20} />
                     </IconButton>
-                    <IconButton>
-                      <FiCreditCard color="#00675b" size={20} />
-                    </IconButton>
+
                     <IconButton>
                       <FiShoppingBag color="#00675b" size={20} />
                     </IconButton>

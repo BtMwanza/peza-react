@@ -16,21 +16,21 @@ import { FiShoppingBag, FiLock, FiUnlock } from "react-icons/fi";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import moment from "moment";
 
-import { selectCart } from "./../redux/reducers/CartSlice";
-import { selectMerchants } from "./../redux/reducers/MerchantSlice";
-import { selectAuth } from "./../redux/reducers/AuthSlice";
-import { selectProducts } from "./../redux/reducers/ProductSlice";
-import Operations from "./../components/functions/operations";
-import useStyles from "./../css/style";
-import { Footer, Reviews } from "./../components";
+import { selectCart } from "../redux/reducers/CartSlice";
+import { selectMerchants } from "../redux/reducers/MerchantSlice";
+import { selectAuth } from "../redux/reducers/AuthSlice";
+import { selectProducts } from "../redux/reducers/ProductSlice";
+import Operations from "../components/functions/operations";
+import useStyles from "../css/style";
+import { Footer, Reviews } from "../components";
 import TEMP_AVATAR from "./../assets/img/tempAvatar.jpg";
 
-function VendorInfo() {
+function MerchantInfo() {
   const { productId } = useParams();
   const cart = useSelector(selectCart);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const currentVendorID = useSelector((state) => state.merchants.merchantID);
+  const currentMerchantID = useSelector((state) => state.merchants.merchantID);
   const { products } = useSelector(selectProducts);
   const { currentMerchant, merchants } = useSelector(selectMerchants);
   const { currentUser, isLoggedIn } = useSelector(selectAuth);
@@ -42,23 +42,27 @@ function VendorInfo() {
   const reviewRef = firebase
     .firestore()
     .collection("REVIEWS")
-    .doc(currentVendorID);
+    .doc(currentMerchantID);
   const numberOfProducts = getNumber();
   const numberSold = productsSold();
   const prodsInStock = inStock();
   const noText = "No Infomation";
-  let vendorName = Operations.shared.getVendorName(currentVendorID, merchants);
+  let merchantName = Operations.shared.getMerchantName(
+    currentMerchantID,
+    merchants
+  );
 
   function getNumber() {
     const items = products.filter(
-      ({ vendorID }) => vendorID === currentVendorID
+      ({ merchantID }) => merchantID === currentMerchantID
     );
     return items.length;
   }
 
   function productsSold() {
     const soldItems = products.filter(
-      ({ vendorID, isSold }) => vendorID === currentVendorID && isSold === true
+      ({ merchantID, isSold }) =>
+        merchantID === currentMerchantID && isSold === true
     );
     return soldItems.length;
   }
@@ -88,8 +92,8 @@ function VendorInfo() {
           latestReviews: {
             text,
             createdAt: moment(new Date().getTime()).format("lll"),
-            name: vendorName,
-            vendorID: currentVendorID,
+            name: merchantName,
+            merchantID: currentMerchantID,
             reviewer_id: reviewer.uid,
             reviewer_name: reviewer.displayName,
             reviewer_avatar: reviewer.photoURL,
@@ -145,7 +149,7 @@ function VendorInfo() {
         <Grid container>
           <Grid item xs={12}>
             <Typography variant="h6" className="text-center">
-              Vendor Information
+              Merchant Information
             </Typography>
             <hr />
           </Grid>
@@ -313,4 +317,4 @@ function VendorInfo() {
   );
 }
 
-export default VendorInfo;
+export default MerchantInfo;

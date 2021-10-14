@@ -51,7 +51,7 @@ function Home() {
           const data = {
             productID: doc.id,
             currentQuantity: parseInt(doc.data().currentQuantity),
-            vendorID: doc.data().vendor,
+            merchantID: doc.data().vendor,
             productName: doc.data().productName,
             image: doc.data().image,
             price: doc.data().price,

@@ -9,7 +9,7 @@ import {
   Checkout,
   Profile,
   ReservedProduct,
-  VendorInfo,
+  MerchantInfo,
   Explore,
   FourZeroFour,
   SignIn,
@@ -51,9 +51,9 @@ function AppRouter() {
       name: "Product Details",
     },
     {
-      component: VendorInfo,
-      path: "/vendor/:vendorID",
-      name: "Vendor Information",
+      component: MerchantInfo,
+      path: "/merchant/:merchantID",
+      name: "merchant Information",
     },
     {
       component: ProductDetails,

@@ -11,7 +11,7 @@ import "./../../../css/App.css";
 import {
   addItem,
   deleteItem,
-  setVendorID,
+  setmerchantID,
   setCurrentProduct,
   setUser,
 } from "./../../../redux";
@@ -77,7 +77,7 @@ function Explore() {
                         className={classes.image2}
                         onClick={() => {
                           dispatch(setCurrentProduct(item));
-                          dispatch(fetchMerchant(item.vendorID));
+                          dispatch(fetchMerchant(item.merchantID));
                         }}
                       >
                         <img

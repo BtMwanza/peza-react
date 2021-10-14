@@ -11,7 +11,7 @@ import {
   ReservedProduct,
   SignIn,
   SignUp,
-  VendorInfo,
+  MerchantInfo,
   Explore,
   Auth,
   FourZeroFour,
@@ -38,7 +38,7 @@ function NavigationContainer() {
           <Route path="/sign_in" exact component={SignIn} />
           <Route path="/sign_up" exact component={SignUp} />
           <Route path="/auth" exact component={Auth} />
-          <Route path="/vendor" exact component={VendorInfo} />
+          <Route path="/merchant" exact component={MerchantInfo} />
           <Route path="/explore" exact component={Explore} />
 
           <Route path="*" component={FourZeroFour} />

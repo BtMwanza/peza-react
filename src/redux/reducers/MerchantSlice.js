@@ -10,7 +10,7 @@ const initialState = {
   selectedMerchant: "",
 };
 
-// Get vendor data
+// Get merchant data
 export const fetchMerchant = createAsyncThunk(
   "prodSlice/fetchMerchant",
   async (merchantID) => {

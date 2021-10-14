@@ -63,10 +63,10 @@ function Cart(props) {
                   image,
                   category,
                   price,
-                  vendorID,
+                  merchantID,
                 } = item;
-                let vendor = Operations.shared.getVendorName(
-                  vendorID,
+                let merchant = Operations.shared.getMerchantName(
+                  merchantID,
                   merchants
                 );
                 return (
@@ -91,7 +91,7 @@ function Cart(props) {
                             {category}
                           </Typography>
                           <Typography variant="subtitle2" color="textSecondary">
-                            Sold By: {vendor}
+                            Sold By: {merchant}
                           </Typography>
                         </Grid>
                         <Grid item xs>
@@ -123,7 +123,7 @@ function Cart(props) {
                           </ButtonGroup>
                         </Grid>
                         <Grid xs>
-                          {vendor !== "Zambia Auto Ltd" && (
+                          {merchant !== "Zambia Auto Ltd" && (
                             <Chip
                               label={"Delivery" && <FiTruck />}
                               color="secondary"

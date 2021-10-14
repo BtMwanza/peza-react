@@ -1,13 +1,6 @@
 import firebase from "firebase/app";
 import Fire from "./../../lib/firebaseConfig";
-import {
-  addItem,
-  deleteItem,
-  setVendorID,
-  setitem,
-  searchList,
-  filterList,
-} from "../../redux";
+import { addItem, deleteItem } from "../../redux";
 
 const db = firebase.firestore().collection("PRODUCTS");
 const reserveDB = firebase.firestore().collection("RESERVED");
@@ -55,8 +48,8 @@ class Operations {
       .toFixed(2);
   };
 
-  getVendorName = (vendorID, merchants) => {
-    let currentID = vendorID;
+  getMerchantName = (merchantID, merchants) => {
+    let currentID = merchantID;
 
     if (currentID) {
       let filter = merchants.find(({ uid }) => uid === currentID);

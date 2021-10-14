@@ -65,7 +65,7 @@ export const fetchRecentProducts = createAsyncThunk(
             key: doc.id,
             productID: doc.id,
             currentQuantity: parseInt(doc.data().currentQuantity),
-            vendorID: doc.data().vendor,
+            merchantID: doc.data().vendor,
             productName: doc.data().productName,
             image: doc.data().image,
             price: parseFloat(doc.data().price),
@@ -184,7 +184,7 @@ export const productSlice = createSlice({
 
       if (state.selectedMerchant !== "none") {
         let filter = state.mainList.filter(
-          ({ vendorID }) => vendorID === state.selectedMerchant
+          ({ merchantID }) => merchantID === state.selectedMerchant
         );
         state.products = filter;
       } else {
